@@ -1,0 +1,6 @@
+- name: Install alp
+  unarchive:
+    src: https://github.com/tkuchiki/alp/releases/download/v1.0.3/alp_linux_amd64.zip
+    dest: /usr/local/bin
+    remote_src: yes
+  become: yes
