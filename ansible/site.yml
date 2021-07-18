@@ -4,3 +4,4 @@
   roles:
     - alp
     - htop
+    - pt-query-digest

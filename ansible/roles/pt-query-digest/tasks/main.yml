@@ -1,0 +1,7 @@
+- name: Include vars
+  include_vars: "{{ ansible_distribution_version }}.yml"
+
+- name: Install pt-query-digest
+  apt:
+    deb: "{{ pt_query_digest_download_url }}"
+  become: yes
