@@ -5,3 +5,4 @@
     - alp
     - htop
     - pt-query-digest
+    - notify_slack
