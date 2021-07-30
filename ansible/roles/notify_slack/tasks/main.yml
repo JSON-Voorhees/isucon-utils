@@ -7,7 +7,7 @@
 
 - name: Place notify_slack settings
   template:
-    src: tempaltes/main.yml
+    src: notify_slack.toml.j2
     dest: /etc/notify_slack.toml
     mode: 0644
   become: yes
