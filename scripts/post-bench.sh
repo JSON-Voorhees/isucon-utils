@@ -7,20 +7,20 @@ echo "start post-bench" | notify_slack
 rm /tmp/alp.txt
 for host in ${NGINX_HOSTS}
 do
-    cat alp-nginx.sh | ssh ${SSH_OPTION} ${SSH_USER}@${host} bash >> /tmp/alp.txt
+    cat alp-nginx.sh | ssh ${SSH_OPTION} ${SSH_USER}@${host} bash >> /tmp/alp.txt 2>&1
     ssh ${SSH_OPTION} ${SSH_USER}@${host} git -C ${REPO_PATH} rev-parse HEAD > /tmp/commit-hash.txt
 done
 
 for host in ${APACHE_HOSTS}
 do
-    cat alp-apache.sh | ssh ${SSH_OPTION} ${SSH_USER}@${host} bash >> /tmp/alp.txt
+    cat alp-apache.sh | ssh ${SSH_OPTION} ${SSH_USER}@${host} bash >> /tmp/alp.txt 2>&1
     ssh ${SSH_OPTION} ${SSH_USER}@${host} git -C ${REPO_PATH} rev-parse HEAD > /tmp/commit-hash.txt
 done
 
 rm /tmp/pt-query-digest.txt
 for host in ${MYSQL_HOSTS}
 do
-    ssh ${SSH_OPTION} ${SSH_USER}@${host} bash -c "hostname; sudo pt-query-digest /var/log/mysql/mysql-slow.log; echo ''" >> /tmp/pt-query-digest.txt
+    ssh ${SSH_OPTION} ${SSH_USER}@${host} bash -c "hostname; sudo pt-query-digest /var/log/mysql/mysql-slow.log; echo ''" >> /tmp/pt-query-digest.txt 2>&1
 done
 
 BODY=$(cat <<EOS
