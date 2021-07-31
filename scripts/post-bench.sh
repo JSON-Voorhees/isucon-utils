@@ -1,5 +1,7 @@
 #!/bin/bash -xe
 
+echo "start post-bench" | notify_slack
+
 . settings.sh
 
 rm /tmp/alp.txt
@@ -49,8 +51,12 @@ EOS
 )
 jq -n --arg body "${BODY}" '{body: $body}' > /tmp/comment.json
 
-curl -X POST \
+url=$(curl -X POST \
     -H "Accept: application/vnd.github.v3+json" \
     -u ${GITHUB_USER}:${GITHUB_TOKEN} \
     -d @/tmp/comment.json \
-    https://api.github.com/repos/${GITHUB_ISSUE}/comments
+    https://api.github.com/repos/${GITHUB_ISSUE}/comments \
+    | jq -r ".html_url")
+
+echo "finish post-bench" | notify_slack
+echo "GitHub Issue コメントはこちら: ${url}" | notify_slack
