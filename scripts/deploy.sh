@@ -20,12 +20,13 @@ contains() {
 echo $(hostname)
 
 # for all hosts, git pull
-sudo git -C ${REPO_PATH} pull origin master
+git -C ${REPO_PATH} pull origin master || git clone ${REPO_URL} ${REPO_PATH}
 
-if contains ${APP_HOSTS} $(hostname); then
-    echo "Deploy app"
-    eval ${APP_BUILD_COMMAND}
-    sudo systemctl restart ${APP_SERVICE_NAME}
+
+if contains ${MYSQL_HOSTS} $(hostname); then
+    echo "Deploy mysql"
+    sudo truncate -s 0 ${MYSQL_SLOW_QUERY_LOG_PATH}
+    sudo systemctl restart mysql
 fi
 
 if contains ${NGINX_HOSTS} $(hostname); then
@@ -40,8 +41,8 @@ if contains ${APACHE_HOSTS} $(hostname); then
     sudo systemctl restart httpd
 fi
 
-if contains ${MYSQL_HOSTS} $(hostname); then
-    echo "Deploy mysql"
-    sudo truncate -s 0 ${MYSQL_SLOW_QUERY_LOG_PATH}
-    sudo systemctl restart mysql
+if contains ${APP_HOSTS} $(hostname); then
+    echo "Deploy app"
+    eval ${APP_BUILD_COMMAND}
+    sudo systemctl restart ${APP_SERVICE_NAME}
 fi
