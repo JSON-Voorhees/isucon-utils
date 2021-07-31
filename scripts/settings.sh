@@ -36,7 +36,7 @@ APACHE_LOG_PATH="/var/log/apache/access_log"
 MYSQL_SLOW_QUERY_LOG_PATH="/var/log/mysql/mysql-slow.log"
 
 
-############ github 
+############ post-bench ############
 GITHUB_USER="fukushun1994"
 GITHUB_TOKEN=""
 GITHUB_ISSUE=""  # {owner}/{repo}/issues/{id}
