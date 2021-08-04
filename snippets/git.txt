@@ -1,0 +1,17 @@
+# git config 設定
+git config --global user.email "isucon@example.com"
+git config --global user.name "isucon"
+
+# git 用鍵生成
+ssh-keygen -t rsa -b 4096
+cat ~/.ssh/id_rsa.pub
+#### ここで github のデプロイキーに登録
+
+# git リポジトリに追加
+git init
+vim .gitignore
+git add .
+git remote add origin <リポジトリurl>
+git branch -M main
+git push -u origin main
+
