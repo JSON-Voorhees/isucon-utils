@@ -10,7 +10,7 @@ APACHE_HOSTS=""
 MYSQL_HOSTS=""
 
 ############ ssh ############
-SSH_USER=""
+SSH_USER="isucon"
 SSH_OPTION=""
 
 

@@ -4,7 +4,7 @@ echo "start post-bench" | notify_slack
 
 . settings.sh
 
-rm /tmp/alp.txt
+rm -f /tmp/alp.txt
 for host in ${NGINX_HOSTS}
 do
     cat alp-nginx.sh | ssh ${SSH_OPTION} ${SSH_USER}@${host} bash >> /tmp/alp.txt 2>&1
@@ -17,7 +17,7 @@ do
     ssh ${SSH_OPTION} ${SSH_USER}@${host} git -C ${REPO_PATH} rev-parse HEAD > /tmp/commit-hash.txt
 done
 
-rm /tmp/pt-query-digest.txt
+rm -f /tmp/pt-query-digest.txt
 for host in ${MYSQL_HOSTS}
 do
     ssh ${SSH_OPTION} ${SSH_USER}@${host} bash -c "hostname; sudo pt-query-digest /var/log/mysql/mysql-slow.log; echo ''" >> /tmp/pt-query-digest.txt 2>&1
