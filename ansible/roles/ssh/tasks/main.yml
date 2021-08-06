@@ -1,0 +1,37 @@
+- name: Create ssh directory
+  file:
+    path: /home/isucon/.ssh
+    state: directory
+    mode: '0700'
+    owner: isucon
+    group: isucon
+  become: yes
+  become_user: isucon
+
+- name: Generate ssh key
+  openssh_keypair:
+    path: /home/isucon/.ssh/id_rsa
+    owner: isucon
+    group: isucon
+  become: yes
+  become_user: isucon
+
+- name: Copy authorized_keys
+  copy:
+    src: files/authorized_keys
+    dest: /home/isucon/.ssh/authorized_keys
+    mode: '0600'
+    owner: isucon
+    group: isucon
+  become: yes
+  become_user: isucon
+
+- name: Copy ssh_config
+  copy:
+    src: files/config
+    dest: /home/isucon/.ssh/config
+    mode: '0600'
+    owner: isucon
+    group: isucon
+  become: yes
+  become_user: isucon

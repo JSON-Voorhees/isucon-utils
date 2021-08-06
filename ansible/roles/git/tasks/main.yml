@@ -1,0 +1,21 @@
+- name: Install git
+  apt:
+    name: git
+    state: present
+  become: yes
+
+- name: Configure git user.email
+  git_config:
+    name: user.email
+    scope: global
+    value: isucon@example.com
+  become: yes
+  become_user: isucon
+
+- name: Configure git user.name
+  git_config:
+    name: user.name 
+    scope: global
+    value: isucon
+  become: yes
+  become_user: isucon

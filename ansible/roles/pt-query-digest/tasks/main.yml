@@ -5,3 +5,12 @@
   apt:
     deb: "{{ pt_query_digest_download_url }}"
   become: yes
+
+- name: Create slow log file
+  file:
+    path: /var/log/mysql/mysql-slow.log
+    state: touch
+    owner: mysql
+    group: mysql
+    mode: '0644'
+  become: yes
