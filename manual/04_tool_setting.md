@@ -1,41 +1,13 @@
 # 解析ツール設定
 
-## ansible で解析ツールインストール
-
-`ansible/hosts` の `[webservers]` にホストを追加
-
-また、`notify_slack_url`, `notify_slack_token`, `notify_slack_channel` にも値を設定しておく
-
-```
-[webservers]
-<ホスト>
-
-[webservers:vars]
-ansible_port=22
-ansible_user=isucon
-ansible_ssh_private_key_file=~/.ssh/id_rsa
-
-notify_slack_url=""
-notify_slack_token=""
-notify_slack_channel=""
-
-```
-
-ansible 実行
-```sh
-ansible-playbook -i hosts site.yml
-```
-
-## ツールごとの設定
-
-### alp
+## alp
 ログの形式をltsvにするよう設定ファイルを編集
 
 もとのログ設定はコメントアウトする
 
 その後、サービスを再起動
 
-#### nginx
+### nginx
 
 ```nginx
 log_format ltsv "time:$time_local"
@@ -57,7 +29,7 @@ log_format ltsv "time:$time_local"
 access_log  /var/log/nginx/access.log  ltsv;
 ```
 
-#### apache
+### apache
 
 ```apache
 LogFormat "time:%t\tforwardedfor:%{X-Forwarded-For}i\thost:%h\treq:%r\tstatus:%>s\tmethod:%m\turi:%U%q\tsize:%B\treferer:%{Referer}i\tua:%{User-Agent}i\treqtime_microsec:%D\tapptime:%D\tcache:%{X-Cache}o\truntime:%{X-Runtime}o\tvhost:%{Host}i" ltsv
@@ -65,7 +37,7 @@ LogFormat "time:%t\tforwardedfor:%{X-Forwarded-For}i\thost:%h\treq:%r\tstatus:%>
 CustomLog /var/log/httpd/access_log ltsv
 ```
 
-#### H2O
+### H2O
 （わからん）
 ```
 access-log:
@@ -73,16 +45,9 @@ access-log:
   format: "time:%t\thost:%h\tua:\"%{User-agent}i\"\tstatus:%s\treq:%r\turi:%U\tapptime:%{duration}x\tsize:%b\tmethod:%m"
 ```
 
-### pt-query-digest (スロークエリ)
+## pt-query-digest (スロークエリ)
 
-#### スロークエリ設定
-
-予めスロークエリログのファイルを作成しておく
-```sh
-sudo touch /var/log/mysql/mysql-slow.log
-sudo chown mysql:mysql /var/log/mysql/mysql-slow.log
-```
-
+### スロークエリ設定
 my.cnf に以下を記載
 ```
 slow_query_log         = 1
