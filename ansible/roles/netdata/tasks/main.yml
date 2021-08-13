@@ -1,0 +1,3 @@
+- name: Install netdata
+  command: bash <(curl -Ss https://my-netdata.io/kickstart.sh)
+  become: yes
