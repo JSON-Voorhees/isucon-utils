@@ -20,7 +20,7 @@ contains() {
 echo $(hostname)
 
 # for all hosts, git pull
-git -C ${REPO_PATH} pull origin master || git clone ${REPO_URL} ${REPO_PATH}
+git -C ${REPO_PATH} pull origin main
 
 
 if contains "${MYSQL_HOSTS}" $(hostname); then
@@ -44,5 +44,6 @@ fi
 if contains "${APP_HOSTS}" $(hostname); then
     echo "Deploy app"
     eval ${APP_BUILD_COMMAND}
+    sudo systemctl daemon-reload
     sudo systemctl restart ${APP_SERVICE_NAME}
 fi
