@@ -22,6 +22,6 @@ git 管理にして、githubへpush
 git init
 git add .
 git branch -M main
-git remote add origin git@github.com:JSON-Voorhees/isucon9q.git
+git remote add origin git@github.com:JSON-Voorhees/isucon11q.git
 git push -u origin main
 ```

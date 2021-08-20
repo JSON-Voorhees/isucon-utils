@@ -3,6 +3,7 @@
 ## nginx
 ```sh
 sudo cp -rf /etc/nginx ./nginx
+sudo chmod -R a+rw ./nginx
 sudo mv /etc/nginx{,.bak}
 sudo ln -s $(pwd)/nginx /etc/nginx
 sudo systemctl restart nginx
@@ -11,6 +12,7 @@ sudo systemctl restart nginx
 ## apache
 ```sh
 sudo cp -rf /etc/httpd ./httpd
+sudo chmod -R a+rw ./httpd
 sudo mv /etc/httpd{,.bak}
 sudo ln -s $(pwd)/httpd /etc/httpd
 sudo systemctl restart httpd
@@ -19,6 +21,7 @@ sudo systemctl restart httpd
 ## mysql
 ```sh
 sudo cp -rf /etc/mysql ./mysql
+sudo chown -R isucon:isucon ./mysql
 sudo mv /etc/mysql{,.bak}
 sudo ln -s $(pwd)/mysql /etc/mysql
 ```
@@ -37,18 +40,14 @@ sudo systemctl restart mysql
 ```
 
 ## webアプリの systemd unit ファイル
-以下のコマンドで、unitファイルのパスと中身が見られるので、パスをメモ
 ```sh
-systemctl cat <サービス名>
-```
-
-```sh
-sudo systemctl stop <サービス名>
-sudo cp -rf <unitファイルのパス> .
-sudo mv <unitファイルのパス>{,.bak}
-sudo ln -s $(pwd)/<unitファイル名> <unitファイルのパス>
+SERVICE_NAME=<サービス名>
+sudo systemctl stop ${SERVICE_NAME}
+sudo cp -rf /etc/systemd/system/${SERVICE_NAME} .
+sudo mv /etc/systemd/system/${SERVICE_NAME}{,.bak}
+sudo ln -s $(pwd)/${SERVICE_NAME} /etc/systemd/system/${SERVICE_NAME}
 sudo systemctl daemon-reload
-sudo systemctl start <サービス名>
+sudo systemctl start ${SERVICE_NAME}
 ```
 
 ## git追加
