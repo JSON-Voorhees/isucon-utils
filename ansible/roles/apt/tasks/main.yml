@@ -6,10 +6,12 @@
     owner: root
     group: root
   become: true
+  register: auto_upgrades
 
 - name: reboot
   reboot:
   become: true
+  when: auto_upgrades.changed
 
 - name: apt update
   apt:
