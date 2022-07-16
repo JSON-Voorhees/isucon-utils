@@ -15,3 +15,8 @@ ansible_ssh_private_key_file=~/.ssh/id_rsa  # SSH の秘密鍵
 # notify_slack の設定
 notify_slack_url="https://hooks.slack.com/..."  # Slack の webhook URL
 ```
+
+### 2. ansible 実行
+```bash
+$ ansible-playbook -i hosts site.yml
+```
