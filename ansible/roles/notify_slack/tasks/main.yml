@@ -3,11 +3,11 @@
     src: https://github.com/catatsuy/notify_slack/releases/download/v0.4.8/notify_slack-linux-amd64.tar.gz
     dest: /usr/local/bin
     remote_src: yes
-  become: yes
+  become: true
 
 - name: Place notify_slack settings
   template:
     src: notify_slack.toml.j2
     dest: /etc/notify_slack.toml
     mode: 0644
-  become: yes
+  become: true

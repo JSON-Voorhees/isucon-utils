@@ -1,10 +1,8 @@
-- name: Include vars
-  include_vars: "{{ ansible_distribution_version }}.yml"
-
 - name: Install pt-query-digest
   apt:
-    deb: "{{ pt_query_digest_download_url }}"
-  become: yes
+    name: percona-toolkit
+    state: present
+  become: true
 
 - name: Create slow log file
   file:
@@ -12,5 +10,5 @@
     state: touch
     owner: mysql
     group: mysql
-    mode: '0644'
-  become: yes
+    mode: "0644"
+  become: true

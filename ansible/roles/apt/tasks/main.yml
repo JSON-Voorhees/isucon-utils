@@ -1,0 +1,17 @@
+- name: disable auto-upgrades
+  copy:
+    src: files/20auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    mode: "0644"
+    owner: root
+    group: root
+  become: true
+
+- name: reboot
+  reboot:
+  become: true
+
+- name: apt update
+  apt:
+    update_cache: true
+  become: true

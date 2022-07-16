@@ -2,20 +2,20 @@
   apt:
     name: git
     state: present
-  become: yes
+  become: true
 
 - name: Configure git user.email
   git_config:
     name: user.email
     scope: global
     value: isucon@example.com
-  become: yes
+  become: true
   become_user: isucon
 
 - name: Configure git user.name
   git_config:
-    name: user.name 
+    name: user.name
     scope: global
     value: isucon
-  become: yes
+  become: true
   become_user: isucon
