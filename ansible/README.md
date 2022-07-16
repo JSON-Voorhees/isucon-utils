@@ -13,7 +13,9 @@ ansible_user=isucon     # SSH のユーザー名
 ansible_ssh_private_key_file=~/.ssh/id_rsa  # SSH の秘密鍵
 
 # notify_slack の設定
-notify_slack_url="https://hooks.slack.com/..."  # Slack の webhook URL
+notify_slack_url="https://hooks.slack.com/..."  # webhook URL
+notify_slack_token="xoxb-XXXXX" # Slack トークン
+notify_slack_channel="XXXXX"    # 送信先チャンネルID
 ```
 
 ### 2. ansible 実行

@@ -28,7 +28,7 @@ pt:
 
 .PHONY: pt-slack
 pt-slack: pt
-	sed -e '1i ```' -e '$$a ```' /tmp/pt-$(TIME).txt | notify_slack
+	notify_slack /tmp/pt-$(TIME).txt
 
 .PHONY: pprof
 pprof:

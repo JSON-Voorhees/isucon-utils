@@ -7,3 +7,5 @@ ansible_user=isucon
 ansible_ssh_private_key_file=~/.ssh/id_rsa
 
 notify_slack_url="https://hooks.slack.com/..."
+notify_slack_token="xoxb-XXXXX"
+notify_slack_channel="XXXXX"
