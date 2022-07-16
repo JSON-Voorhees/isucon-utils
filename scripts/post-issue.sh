@@ -2,12 +2,10 @@ SSH_OPTION=""
 SSH_USER="isucon"
 ALP_HOST=""
 PT_HOST=""
-DIR="/home/isucon/"
+DIR=""
 
 GITHUB_USER="fukushun1994"
-GITHUB_TOKEN="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"
 GITHUB_ISSUE="JSON-Voorhees/isucon9-qualify-study/issues/1"  # {owner}/{repo}/issues/{id}
-
 
 ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && git rev-parse HEAD" > /tmp/commit.txt
 ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && make alp" > /tmp/alp.txt
