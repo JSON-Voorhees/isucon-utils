@@ -9,3 +9,4 @@
     - notify_slack
     - ssh
     - git
+    - graphviz
