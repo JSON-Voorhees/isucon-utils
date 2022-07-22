@@ -37,15 +37,15 @@ pprof:
 
 #### deploy
 REPOSITORY ?= origin
-BRANCH ?= main
+B ?= main
 .PHONY: deploy
 deploy: git-pull reset-log deploy-app deploy-nginx deploy-mysql
 
 .PHONY: git-pull
 git-pull:
 	git fetch && \
-	git checkout $(BRANCH) && \
-	git merge $(REPOSITORY)/$(BRANCH)
+	git checkout $(B) && \
+	git merge $(REPOSITORY)/$(B)
 
 .PHONY: deploy-app
 deploy-app:
