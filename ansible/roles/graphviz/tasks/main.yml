@@ -1,5 +1,5 @@
 - name: Install graphviz
-  apt:
+  package:
     name: graphviz
     state: present
   become: true

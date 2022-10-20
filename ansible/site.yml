@@ -4,9 +4,7 @@
   roles:
     - apt
     - alp
-    - htop
     - pt-query-digest
-    - notify_slack
     - ssh
     - git
-    - graphviz
+    #- graphviz

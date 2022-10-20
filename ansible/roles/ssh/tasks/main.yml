@@ -3,35 +3,35 @@
     path: /home/isucon/.ssh
     state: directory
     mode: "0700"
-    owner: isucon
-    group: isucon
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_group }}"
   become: true
   become_user: isucon
 
 - name: Generate ssh key
   openssh_keypair:
     path: /home/isucon/.ssh/id_rsa
-    owner: isucon
-    group: isucon
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_group }}"
   become: true
-  become_user: isucon
+  become_user: "{{ ssh_user }}"
 
 - name: Copy authorized_keys
   copy:
     src: files/authorized_keys
     dest: /home/isucon/.ssh/authorized_keys
     mode: "0600"
-    owner: isucon
-    group: isucon
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_group }}"
   become: true
-  become_user: isucon
+  become_user: "{{ ssh_user }}"
 
 - name: Copy ssh_config
   copy:
     src: files/config
     dest: /home/isucon/.ssh/config
     mode: "0600"
-    owner: isucon
-    group: isucon
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_group }}"
   become: true
-  become_user: isucon
+  become_user: "{{ ssh_user }}"

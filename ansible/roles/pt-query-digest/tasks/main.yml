@@ -1,7 +1,31 @@
-- name: Install pt-query-digest
+- name: Install pt-query-digest (ubuntu)
   apt:
     name: percona-toolkit
     state: present
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install percona repository (centos)
+  yum:
+    name: https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+    state: present
+  become: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Install pt-query-digest (centos)
+  yum:
+    name: percona-toolkit
+    state: present
+  become: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Create mysql log directory
+  file:
+    path: /var/log/mysql
+    state: directory
+    owner: mysql
+    group: mysql
+    mode: "755"
   become: true
 
 - name: Create slow log file
