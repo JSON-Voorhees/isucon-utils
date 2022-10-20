@@ -62,8 +62,8 @@ sudo systemctl restart mysql
 
 変更が反映されていることを確認
 ```sh
-echo 'show variables like "slow_query%";' | mysql -u isucon -pisucon
-echo 'show variables like "long_query_time";' | mysql -u isucon -pisucon
+echo 'show variables like "slow_query%";' | mysql -u isucari -pisucari
+echo 'show variables like "long_query_time";' | mysql -u isucari -pisucari
 ```
 
 ## スクリプトの設定

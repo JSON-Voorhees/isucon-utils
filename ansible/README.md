@@ -12,6 +12,10 @@ ansible_port=22         # SSH の接続先ポート
 ansible_user=isucon     # SSH のユーザー名
 ansible_ssh_private_key_file=~/.ssh/id_rsa  # SSH の秘密鍵
 
+git_user=isucon     # git 設定をするユーザー
+ssh_user=isucon     # ssh 設定をするユーザー
+ssh_group=isucon    # ssh 設定をするグループ
+
 # notify_slack の設定
 notify_slack_url="https://hooks.slack.com/..."  # webhook URL
 notify_slack_token="xoxb-XXXXX" # Slack トークン
