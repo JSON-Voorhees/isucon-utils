@@ -1,0 +1,17 @@
+# binlog を切る
+disable-log-bin
+
+# ログを1秒に1回フラッシュするようにする
+innodb_flush_log_at_trx_commit = 0
+
+# ログバッファを増やしてファイルへのフラッシュ頻度を下げる（デフォルトは1MB）
+innodb_log_buffer_size = 64MB
+
+# ログファイルのサイズを増やしてテーブルスペースへのフラッシュ頻度を下げる
+innodb_log_file_size = 512MB
+
+# バッファープールサイズを大きくする（メモリの75%ぐらい）
+innodb_buffer_pool_size = 3GB
+
+# 最大接続数を増やす
+max_connections = 1024
