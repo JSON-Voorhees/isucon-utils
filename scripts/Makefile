@@ -5,7 +5,7 @@
 
 # alp settings
 NGINX_LOG=/var/log/nginx/access.log
-MATCHING=""
+MATCHING="/sample/[0-9]+,/sample/index"
 FIELDS=count,2xx,3xx,4xx,5xx,method,uri,min,max,sum,avg,p99
 
 # slow query settings
@@ -49,10 +49,12 @@ git-pull:
 
 .PHONY: deploy-app
 deploy-app:
-#	cd webapp/golang && \
-	make && \
+#	sudo cp ./isuconquest.go.service /etc/systemd/system/ && \
+	sudo cp ./env /home/isucon/ && \
+	cd /home/isucon/webapp/go/ && \
+	/home/isucon/local/golang/bin/go build -o isuconquest && \
 	sudo systemctl daemon-reload && \
-	sudo systemctl restart isu-go.service
+	sudo systemctl restart isuconquest.go.service
 
 .PHONY: reset-log
 reset-log:
@@ -61,10 +63,10 @@ reset-log:
 
 .PHONY: deploy-nginx
 deploy-nginx:
-	sudo cp -rf nginx/* /etc/nginx/ && \
+	sudo cp -rf ./nginx/* /etc/nginx/ && \
 	sudo systemctl restart nginx
 
 .PHONY: deploy-mysql
 deploy-mysql:
-	sudo cp -rf mysql/mysqld.cnf /etc/mysql/mysql.conf.d/ && \
+	sudo cp -rf ./mysql/* /etc/mysql/ && \
 	sudo systemctl restart mysql

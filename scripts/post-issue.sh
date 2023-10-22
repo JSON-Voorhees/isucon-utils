@@ -1,15 +1,15 @@
 SSH_OPTION=""
 SSH_USER="isucon"
-ALP_HOST=""
-PT_HOST=""
+ALP_HOST="52.195.194.161"
+PT_HOST="54.178.4.218"
 DIR="/home/isucon/webapp"
 
 GITHUB_USER="youdofoo"
-GITHUB_ISSUE="JSON-Voorhees/isucon12-qualify/issues/1"  # {owner}/{repo}/issues/{id}
+GITHUB_ISSUE="youdofoo/isucon12-final-go/issues/1"  # {owner}/{repo}/issues/{id}
 
 ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && git rev-parse HEAD" > /tmp/commit.txt
-ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && make alp-slack" > /tmp/alp.txt
-ssh ${SSH_OPTION} ${SSH_USER}@${PT_HOST}  "cd ${DIR} && make pt-slack" > /tmp/pt.txt
+ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && make alp" > /tmp/alp.txt
+ssh ${SSH_OPTION} ${SSH_USER}@${PT_HOST}  "cd ${DIR} && make pt" > /tmp/pt.txt
 
 BODY=$(cat <<EOS
 # score: ${1}
@@ -17,15 +17,19 @@ BODY=$(cat <<EOS
 $(cat /tmp/commit.txt)
 
 <details><summary>alp</summary>
-<p>
+
+\`\`\`
 
 $(cat /tmp/alp.txt)
 
-</p>
+\`\`\`
+
 </details>
 
 <details><summary>pt-query-digest</summary>
-<p>
+
+\`\`\`
+
 
 $(cat /tmp/pt.txt | while read line
 do
@@ -33,7 +37,8 @@ echo "${line}" | cut -c -100
 done
 )
 
-</p>
+\`\`\`
+
 </details>
 EOS
 )
