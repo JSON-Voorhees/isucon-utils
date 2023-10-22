@@ -11,7 +11,7 @@
 - name: Copy ssh key
   copy:
     src: "{{ item }}"
-    dest: "/home/{{ ssh_user }}/.ssh/""
+    dest: "/home/{{ ssh_user }}/.ssh/"
     mode: "0600"
     owner: "{{ ssh_user }}"
     group: "{{ ssh_group }}"
