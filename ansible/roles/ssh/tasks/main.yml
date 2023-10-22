@@ -6,7 +6,7 @@
     owner: "{{ ssh_user }}"
     group: "{{ ssh_group }}"
   become: true
-  become_user: isucon
+  become_user: "{{ ssh_user }}"
 
 - name: Copy ssh key
   copy:
