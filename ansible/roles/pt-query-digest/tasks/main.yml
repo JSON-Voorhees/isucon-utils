@@ -5,19 +5,19 @@
   become: true
   when: ansible_distribution == 'Ubuntu'
 
-- name: Install percona repository (centos)
+- name: Install percona repository (centos or rocky)
   yum:
     name: https://repo.percona.com/yum/percona-release-latest.noarch.rpm
     state: present
   become: true
-  when: ansible_distribution == 'CentOS'
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Rocky'
 
-- name: Install pt-query-digest (centos)
+- name: Install pt-query-digest (centos or rocky)
   yum:
     name: percona-toolkit
     state: present
   become: true
-  when: ansible_distribution == 'CentOS'
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Rocky'
 
 - name: Create mysql log directory
   file:
