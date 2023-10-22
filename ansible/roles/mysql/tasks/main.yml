@@ -1,0 +1,14 @@
+- name: Copy slow log conf
+  copy:
+    src: files/slow_log.cnf
+    dest: /etc/mysql/mysql.conf.d/
+    mode: "0644"
+    owner: root
+    group: root
+  become: true
+
+- name: Restart mysql
+  service:
+    name: mysql
+    state: restarted
+  become: true

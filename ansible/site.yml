@@ -7,4 +7,6 @@
     - pt-query-digest
     - ssh
     - git
+    - nginx
+    - mysql
     #- graphviz

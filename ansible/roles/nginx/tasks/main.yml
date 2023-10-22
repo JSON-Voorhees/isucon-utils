@@ -1,0 +1,22 @@
+- name: Comment out default access log conf
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: '^(\s+access_log .*)'
+    backrefs: true
+    line: '#\1'
+  become: true
+
+- name: Copy access log conf
+  copy:
+    src: files/access_log.conf
+    dest: /etc/nginx/conf.d/
+    mode: "0644"
+    owner: root
+    group: root
+  become: true
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+  become: true
