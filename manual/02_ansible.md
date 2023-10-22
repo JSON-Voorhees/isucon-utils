@@ -1,8 +1,6 @@
 # ansible を実行する
 `ansible/hosts` の `[webservers]` にホストを追加
 
-また、`notify_slack_url`, `notify_slack_token`, `notify_slack_channel` にも値を設定しておく
-
 ```
 [webservers]
 <ホスト>
@@ -10,11 +8,7 @@
 [webservers:vars]
 ansible_port=22
 ansible_user=isucon
-ansible_ssh_private_key_file=~/.ssh/id_rsa
-
-notify_slack_url=""
-notify_slack_token=""
-notify_slack_channel=""
+ansible_ssh_private_key_file=~/.ssh/id_ed25519
 
 ```
 

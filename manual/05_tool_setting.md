@@ -68,30 +68,6 @@ echo 'show variables like "long_query_time";' | mysql -u isucari -pisucari
 
 ## スクリプトの設定
 
-`scripts/settings.sh` にホスト名やSSHのオプションなどを設定する
+[`scripts/Makefile`](../scripts/Makefile) をサーバーにコピーし、リポジトリに追加
 
-`scripts/alp-nginx.sh` または `scripts/alp-apache.sh` の `ALP_OPTIONS` にURIの変数をまとめる以下のような設定を入れる（以下はisucon10の例）
-
-どのようにまとめるかはソースコードを見ればわかるはず
-
-```
--m /api/estate/[0-9]+,/api/chair/[0-9]+,/api/estate/req_doc/[0-9]+
-```
-
-## alpの結果をブラウザから見られるようにする設定
-`/www/data/logs/alp.html` に出すようにしているので、そこへのルーティングを追加すれば良い
-
-```nginx
-http {
-    ...
-    server{
-        ...
-        location /logs/ {
-            root /www/data;
-            index alp.html;
-        }
-        ...
-    }
-    ...
-}
-```
+デプロイコマンドや alp のマッチングなどはアプリケーションに合わせて適切に設定する
