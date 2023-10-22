@@ -4,8 +4,7 @@ ALP_HOST="52.195.194.161"
 PT_HOST="54.178.4.218"
 DIR="/home/isucon/webapp"
 
-GITHUB_USER="youdofoo"
-GITHUB_ISSUE="youdofoo/isucon12-final-go/issues/1"  # {owner}/{repo}/issues/{id}
+source ./github-setting.sh
 
 ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && git rev-parse HEAD" > /tmp/commit.txt
 ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && make alp" > /tmp/alp.txt
