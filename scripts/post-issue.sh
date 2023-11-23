@@ -32,7 +32,7 @@ $(cat /tmp/alp.txt)
 
 $(cat /tmp/pt.txt | while read line
 do
-echo "${line}" | cut -c -100
+echo "${line}"
 done
 )
 
