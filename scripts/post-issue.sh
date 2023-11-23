@@ -1,7 +1,7 @@
 SSH_OPTION=""
 SSH_USER="isucon"
 ALP_HOST="52.199.200.30"
-PT_HOST="52.199.200.30"
+PT_HOST="52.197.7.153"
 DIR="/home/isucon/webapp"
 
 source ./github-setting.sh
