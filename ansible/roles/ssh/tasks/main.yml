@@ -6,7 +6,6 @@
     owner: "{{ ssh_user }}"
     group: "{{ ssh_group }}"
   become: true
-  become_user: "{{ ssh_user }}"
 
 - name: Copy ssh key
   copy:
@@ -18,7 +17,6 @@
   with_fileglob:
     - "files/id_ed25519*"
   become: true
-  become_user: "{{ ssh_user }}"
 
 # - name: Copy authorized_keys
 #   copy:
@@ -38,4 +36,3 @@
     owner: "{{ ssh_user }}"
     group: "{{ ssh_group }}"
   become: true
-  become_user: "{{ ssh_user }}"
