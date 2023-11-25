@@ -34,7 +34,7 @@ $(cat /tmp/alp.txt)
 
 $(cat /tmp/pt.txt | while read line
 do
-echo "${line}"
+echo "${line}" | cut -c 100
 done
 )
 
