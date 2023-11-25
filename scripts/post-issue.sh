@@ -7,10 +7,10 @@ DIR="/home/isucon/webapp"
 
 source ./github-setting.sh
 
-# ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && git branch --show-current && git rev-parse HEAD" > /tmp/commit.txt
-# ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && make alp" > /tmp/alp.txt
-# ssh ${SSH_OPTION} ${SSH_USER}@${PT_HOST}  "cd ${DIR} && make pt" > /tmp/pt.txt
-# ssh ${SSH_OPTION} ${SSH_USER}@${PT_HOST2}  "cd ${DIR} && make pt" > /tmp/pt2.txt
+ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && git branch --show-current && git rev-parse HEAD" > /tmp/commit.txt
+ssh ${SSH_OPTION} ${SSH_USER}@${ALP_HOST} "cd ${DIR} && make alp" > /tmp/alp.txt
+ssh ${SSH_OPTION} ${SSH_USER}@${PT_HOST}  "cd ${DIR} && make pt" > /tmp/pt.txt
+ssh ${SSH_OPTION} ${SSH_USER}@${PT_HOST2}  "cd ${DIR} && make pt" > /tmp/pt2.txt
 
 BODY=$(cat <<EOS
 # score: ${1}
