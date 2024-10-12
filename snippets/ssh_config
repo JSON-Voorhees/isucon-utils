@@ -1,0 +1,14 @@
+Host isu1
+        HostName 127.0.0.1
+
+Host isu2
+        HostName 127.0.0.1
+
+Host isu3
+        HostName 127.0.0.1
+
+Host isu*
+        User isucon
+        Port 22
+        ServerAliveInterval 60
+        ServerAliveCountMax 5
