@@ -1,0 +1,12 @@
+[webservers]
+isu1
+isu2
+isu3
+
+[webservers:vars]
+ansible_port=22
+ansible_user=isucon
+
+git_user=isucon
+ssh_user=isucon
+ssh_group=isucon
