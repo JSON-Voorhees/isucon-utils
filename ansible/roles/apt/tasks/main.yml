@@ -9,11 +9,6 @@
   register: auto_upgrades
   when: ansible_distribution == 'Ubuntu'
 
-- name: reboot
-  reboot:
-  become: true
-  when: auto_upgrades.changed
-
 - name: apt update
   apt:
     update_cache: true
