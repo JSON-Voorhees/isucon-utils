@@ -7,27 +7,6 @@
     group: "{{ ssh_group }}"
   become: true
 
-- name: Copy ssh key
-  copy:
-    src: "{{ item }}"
-    dest: "/home/{{ ssh_user }}/.ssh/"
-    mode: "0600"
-    owner: "{{ ssh_user }}"
-    group: "{{ ssh_group }}"
-  with_fileglob:
-    - "files/id_ed25519*"
-  become: true
-
-# - name: Copy authorized_keys
-#   copy:
-#     src: files/authorized_keys
-#     dest: "/home/{{ ssh_user }}/.ssh/authorized_keys"
-#     mode: "0600"
-#     owner: "{{ ssh_user }}"
-#     group: "{{ ssh_group }}"
-#   become: true
-#   become_user: "{{ ssh_user }}"
-
 - name: Copy ssh_config
   copy:
     src: files/config
@@ -36,3 +15,15 @@
     owner: "{{ ssh_user }}"
     group: "{{ ssh_group }}"
   become: true
+
+- name: Create deploy key
+  openssh_keypair:
+    path: "/home/{{ ssh_user }}/.ssh/id_ed25519"
+    type: ed25519
+  become: true
+  become_user: "{{ ssh_user }}"
+  register: deploy_key
+
+- name: Print deploy key
+  debug:
+    msg: "{{ deploy_key.public_key }}"
