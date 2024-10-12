@@ -1,0 +1,44 @@
+- name: Install redis for Ubuntu
+  when: ansible_distribution == 'Ubuntu'
+  become: true
+  block:
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - lsb-release
+          - curl
+          - gpg
+        state: present
+
+    - name: Add redis repo
+      ansible.builtin.shell: |
+        curl -fsSL https://packages.redis.io/gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+        sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" \
+        | sudo tee /etc/apt/sources.list.d/redis.list
+
+    - name: Install redis-server
+      ansible.builtin.apt:
+        name: redis
+        state: present
+
+    - name: Install redis
+      ansible.builtin.apt:
+        name: redis-tools
+        state: present
+
+- name: Install redis for CentOS or Rocky
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Rocky'
+  become: true
+  block:
+    - name: Install redis
+      ansible.builtin.dnf:
+        name: redis
+        state: present
+
+- name: Start and enable redis-server
+  ansible.builtin.systemd_service:
+    name: redis
+    state: started
+    enabled: true
+  become: true
