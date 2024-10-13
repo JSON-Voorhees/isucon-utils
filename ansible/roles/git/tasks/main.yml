@@ -1,12 +1,12 @@
 - name: Install git (ubuntu)
-  apt:
+  ansible.builtin.apt:
     name: git
     state: present
   become: true
   when: ansible_distribution == 'Ubuntu'
 
 - name: Install ius repository (centos)
-  yum:
+  ansible.builtin.yum:
     name:
       - https://repo.ius.io/ius-release-el7.rpm
       - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -15,7 +15,7 @@
   when: ansible_distribution == 'CentOS'
 
 - name: Install git (centos)
-  yum:
+  ansible.builtin.yum:
     name: git
     enablerepo: ius
     state: present
@@ -23,14 +23,14 @@
   when: ansible_distribution == 'CentOS'
 
 - name: Install git (rocky)
-  yum:
+  ansible.builtin.yum:
     name: git
     state: present
   become: true
   when: ansible_distribution == 'Rocky'
 
 - name: Configure git user.email
-  git_config:
+  community.general.git_config:
     name: user.email
     scope: global
     value: "{{ git_user }}@example.com"
@@ -38,7 +38,7 @@
   become_user: "{{ git_user }}"
 
 - name: Configure git user.name
-  git_config:
+  community.general.git_config:
     name: user.name
     scope: global
     value: "{{ git_user }}"

@@ -10,12 +10,16 @@
           - gpg
         state: present
 
+    - name: Add redis gpg key
+      ansible.builtin.get_url:
+        url: https://packages.redis.io/gpg
+        dest: /usr/share/keyrings/redis-archive-keyring.asc
+        mode: '0644'
+
     - name: Add redis repo
-      ansible.builtin.shell: |
-        curl -fsSL https://packages.redis.io/gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
-        sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
-        echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" \
-        | sudo tee /etc/apt/sources.list.d/redis.list
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.asc] https://packages.redis.io/deb {{ ansible_distribution_release }} main"
+        state: present
 
     - name: Install redis-server
       ansible.builtin.apt:
@@ -37,7 +41,7 @@
         state: present
 
 - name: Start and enable redis-server
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: redis
     state: started
     enabled: true

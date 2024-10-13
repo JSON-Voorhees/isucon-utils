@@ -1,5 +1,5 @@
 - name: Create ssh directory
-  file:
+  ansible.builtin.file:
     path: "/home/{{ ssh_user }}/.ssh"
     state: directory
     mode: "0700"
@@ -8,7 +8,7 @@
   become: true
 
 - name: Copy ssh_config
-  copy:
+  ansible.builtin.copy:
     src: files/config
     dest: "/home/{{ ssh_user }}/.ssh/config"
     mode: "0600"
@@ -17,7 +17,7 @@
   become: true
 
 - name: Create deploy key
-  openssh_keypair:
+  community.crypto.openssh_keypair:
     path: "/home/{{ ssh_user }}/.ssh/id_ed25519"
     type: ed25519
   become: true
@@ -25,5 +25,5 @@
   register: deploy_key
 
 - name: Print deploy key
-  debug:
+  ansible.builtin.debug:
     msg: "{{ deploy_key.public_key }}"

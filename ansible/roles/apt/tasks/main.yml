@@ -1,5 +1,5 @@
-- name: disable auto-upgrades
-  copy:
+- name: Disable auto-upgrades
+  ansible.builtin.copy:
     src: files/20auto-upgrades
     dest: /etc/apt/apt.conf.d/20auto-upgrades
     mode: "0644"
@@ -9,8 +9,8 @@
   register: auto_upgrades
   when: ansible_distribution == 'Ubuntu'
 
-- name: apt update
-  apt:
+- name: Run apt update
+  ansible.builtin.apt:
     update_cache: true
   become: true
   when: ansible_distribution == 'Ubuntu'

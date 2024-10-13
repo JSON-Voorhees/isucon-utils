@@ -1,5 +1,5 @@
 - name: Comment out default access log conf
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/nginx/nginx.conf
     regexp: '^(\s+access_log .*)'
     backrefs: true
@@ -7,7 +7,7 @@
   become: true
 
 - name: Copy access log conf
-  copy:
+  ansible.builtin.copy:
     src: files/access_log.conf
     dest: /etc/nginx/conf.d/
     mode: "0644"
@@ -16,7 +16,7 @@
   become: true
 
 - name: Restart nginx
-  service:
+  ansible.builtin.service:
     name: nginx
     state: restarted
   become: true
