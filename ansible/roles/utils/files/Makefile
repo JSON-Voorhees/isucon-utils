@@ -40,7 +40,7 @@ alp:
 
 .PHONY: slp
 slp:
-	sudo slp my --file ${NGINX_LOG} --config /opt/pprotein/data/slp.yml --dump /tmp/slp-$(TIME).yaml | tee /tmp/slp-$(TIME).txt
+	sudo slp my --file ${MYSQL_SLOW_LOG} --config /opt/pprotein/data/slp.yml --dump /tmp/slp-$(TIME).yaml | tee /tmp/slp-$(TIME).txt
 
 .PHONY: alp-group
 alp-group:
