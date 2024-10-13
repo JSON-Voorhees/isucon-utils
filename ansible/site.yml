@@ -2,12 +2,12 @@
 - hosts: webservers
   remote_user: root
   roles:
-    # - apt
-    # - alp
-    # - pt-query-digest
-    # - ssh
-    # - git
-    # - nginx
-    # - mysql
+    - apt
+    - alp
+    - pt-query-digest
+    - ssh
+    - git
+    - nginx
+    - mysql
     - redis
     # - graphviz
