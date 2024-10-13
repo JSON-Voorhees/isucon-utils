@@ -36,7 +36,11 @@ HOSTNAME = $(shell hostname)
 #### analysis
 .PHONY: alp
 alp:
-	sudo alp ltsv --file ${NGINX_LOG} --config ./alp.yaml | tee /tmp/alp-$(TIME).txt
+	sudo alp ltsv --file ${NGINX_LOG} --config /opt/pprotein/data/alp.yml | tee /tmp/alp-$(TIME).txt
+
+.PHONY: slp
+slp:
+	sudo slp my --file ${NGINX_LOG} --config /opt/pprotein/data/slp.yml --dump /tmp/slp-$(TIME).yaml | tee /tmp/slp-$(TIME).txt
 
 .PHONY: alp-group
 alp-group:
