@@ -1,0 +1,26 @@
+- name: Install unzip
+  ansible.builtin.package:
+    name: zip
+    state: present
+  become: true
+
+- name: Install pprotein
+  ansible.builtin.unarchive:
+    src: https://github.com/kaz/pprotein/releases/download/v1.2.3/pprotein_1.2.3_linux_amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: true
+  become: true
+
+- name: Place pprotein service file
+  ansible.builtin.template:
+    src: pprotein.service.j2
+    dest: /etc/systemd/system/pprotein.service
+    mode: '0644'
+  become: true
+
+- name: Place pprotein-agent service file
+  ansible.builtin.template:
+    src: pprotein-agent.service.j2
+    dest: /etc/systemd/system/pprotein-agent.service
+    mode: '0644'
+  become: true
