@@ -4,14 +4,14 @@
   remote_user: root
   roles:
     - hostname
-    - utils
     - apt
-    - alp
-    - slp
-    - pt-query-digest
     - ssh
     - git
     - nginx
     - mysql
     - redis
-    # - graphviz
+    - alp
+    - slp
+    - pt-query-digest
+    - graphviz
+    - utils
