@@ -1,3 +1,5 @@
+SHELL = /bin/bash
+
 ####################################
 # 問題ごとに変わる設定
 
@@ -34,6 +36,10 @@ HOSTNAME = $(shell hostname)
 .PHONY: alp
 alp:
 	sudo alp ltsv --file ${NGINX_LOG} --config ./alp.yaml | tee /tmp/alp-$(TIME).txt
+
+.PHONY: alp-group
+alp-group:
+	cat $(APP_DIR)/main.go | grep -E '"(/[^/]+)+"' | sed -r 's#^.*"((/[^/]+)+)".*$$#  - \1#g' | sed -r 's#(:[^/]+)#\[\^\/\]\+#g' | sort -r | uniq
 
 .PHONY: pt
 pt:
