@@ -31,11 +31,12 @@
         name: redis-tools
         state: present
 
-    - name: Start and enable redis-server
+    # 必要ない可能性もあるので stop & disable 状態とする
+    - name: Stop and disable redis-server
       ansible.builtin.service:
         name: redis-server
-        state: started
-        enabled: true
+        state: stopped
+        enabled: false
       become: true
 
 - name: Install redis for CentOS or Rocky
@@ -47,9 +48,9 @@
         name: redis
         state: present
 
-    - name: Start and enable redis-server
+    - name: Stop and disable redis-server
       ansible.builtin.service:
         name: redis
-        state: started
-        enabled: true
+        state: stopped
+        enabled: false
       become: true
