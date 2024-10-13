@@ -93,16 +93,20 @@ copy-all: copy-nginx copy-mysql copy-systemd copy-env
 copy-nginx:
 	sudo cp -rf $(NGINX_DIR) ./nginx
 	sudo chown $(USER) -R ./nginx
-	sudo mv $(NGINX_DIR){,.bak}
+	sudo cp -rf $(NGINX_DIR) $(NGINX_DIR).bak
 
 copy-mysql:
-	sudo cp -rf $(MYSQL_DIR) ./nginx
-	sudo chown $(USER) -R ./nginx
-	sudo mv $(MYSQL_DIR){,.bak}
+	sudo cp -rf $(MYSQL_DIR) ./mysql
+	sudo chown $(USER) -R ./mysql
+	sudo cp -rf $(MYSQL_DIR) $(MYSQL_DIR).bak
 
 copy-systemd:
 	sudo cp $(SYSTEMD_DIR)/$(SERVICE_NAME) ./
-	sudo mv $(SYSTEMD_DIR)/${SERVICE_NAME}{,.bak}
+	sudo cp -rf $(SYSTEMD_DIR)/${SERVICE_NAME} $(SYSTEMD_DIR)/${SERVICE_NAME}.bak
+
+copy-env:
+	sudo cp $(ENV_FILE_PATH) ./
+	sudo cp -rf $(ENV_FILE_PATH) $(ENV_FILE_PATH).bak
 
 # サーバーごとのディレクトリを作成して .gitkeep を作成
 KEEP_FILES := $(SERVERS:=/.gitkeep)

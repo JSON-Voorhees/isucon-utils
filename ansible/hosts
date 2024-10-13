@@ -10,3 +10,5 @@ ansible_user=isucon
 git_user=isucon
 ssh_user=isucon
 ssh_group=isucon
+
+webapp_dir=/home/isucon/webapp
