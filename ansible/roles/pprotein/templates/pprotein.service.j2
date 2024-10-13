@@ -4,7 +4,7 @@ Description=pprotein service
 [Service]
 ExecStart=/usr/local/bin/pprotein
 WorkingDirectory=/home/{{ ansible_user }}
-Environment=PATH=$PATH:/usr/local/bin
+Environment=PATH=$PATH:/usr/bin:/usr/local/bin
 Restart=always
 User=root
 
