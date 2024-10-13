@@ -16,17 +16,18 @@
     path: /opt/pprotein
     state: directory
     mode: '0755'
+  become: true
 
 - name: Place pprotein service file
-  ansible.builtin.template:
-    src: pprotein.service.j2
+  ansible.builtin.file:
+    src: files/pprotein.service
     dest: /etc/systemd/system/pprotein.service
     mode: '0644'
   become: true
 
 - name: Place pprotein-agent service file
-  ansible.builtin.template:
-    src: pprotein-agent.service.j2
+  ansible.builtin.file:
+    src: files/pprotein-agent.service
     dest: /etc/systemd/system/pprotein-agent.service
     mode: '0644'
   become: true
@@ -38,3 +39,4 @@
     mode: '0666'
     owner: root
     group: root
+  become: true
