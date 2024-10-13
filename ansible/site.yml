@@ -3,6 +3,7 @@
   hosts: webservers
   remote_user: root
   roles:
+    - hostname
     - apt
     - alp
     - pt-query-digest
