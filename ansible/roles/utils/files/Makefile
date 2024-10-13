@@ -40,7 +40,7 @@ alp:
 
 .PHONY: alp-group
 alp-group:
-	cat $(APP_DIR)/main.go | grep -E '"(/[^/]+)+"' | sed -r 's#^.*"((/[^/]+)+)".*$$#  - \1#g' | sed -r 's#(:[^/]+)#\[\^\/\]\+#g' | sort -r | uniq
+	cat $(APP_DIR)/main.go | grep -E '"(/[^/]+)+"' | sed -r 's#^.*"((/[^/]+)+)".*$$#  - \^\1\$$#g' | sed -r 's#(:[^/]+)#\[\^\/\]\+#g' | sort -r | uniq
 
 .PHONY: pt
 pt:
