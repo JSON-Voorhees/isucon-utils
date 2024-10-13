@@ -1,5 +1,12 @@
+- name: Install epel-release (CentOS or Rocky)
+  ansible.builtin.yum:
+    name: epel-release
+    state: present
+  become: true
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Rocky'
+
 - name: Install htop
-  apt:
+  ansible.builtin.package:
     name: htop
     state: present
   become: true
