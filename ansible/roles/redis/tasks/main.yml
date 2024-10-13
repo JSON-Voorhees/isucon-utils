@@ -31,6 +31,13 @@
         name: redis-tools
         state: present
 
+    - name: Start and enable redis-server
+      ansible.builtin.service:
+        name: redis-server
+        state: started
+        enabled: true
+      become: true
+
 - name: Install redis for CentOS or Rocky
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Rocky'
   become: true
@@ -40,9 +47,9 @@
         name: redis
         state: present
 
-- name: Start and enable redis-server
-  ansible.builtin.service:
-    name: redis
-    state: started
-    enabled: true
-  become: true
+    - name: Start and enable redis-server
+      ansible.builtin.service:
+        name: redis
+        state: started
+        enabled: true
+      become: true
