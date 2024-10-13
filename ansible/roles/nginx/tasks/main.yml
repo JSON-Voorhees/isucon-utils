@@ -15,6 +15,18 @@
     group: root
   become: true
 
+- name: Check if access log exists
+  ansible.builtin.stat:
+    path: /var/log/nginx/access.log
+  register: access_log_stat
+
+- name: Add read permission to access log
+  ansible.builtin.file:
+    path: /var/log/nginx/access.log
+    mode: "0644"
+  become: true
+  when: access_log_stat.stat.exists
+
 - name: Restart nginx
   ansible.builtin.service:
     name: nginx
