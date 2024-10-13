@@ -11,9 +11,9 @@
     remote_src: true
   become: true
 
-- name: Create pprotein directory
+- name: Create pprotein data directory
   ansible.builtin.file:
-    path: /opt/pprotein
+    path: /opt/pprotein/data
     state: directory
     mode: '0755'
   become: true
@@ -39,7 +39,7 @@
 - name: Copy setting files
   ansible.builtin.copy:
     src: files/settings/
-    dest: /opt/pprotein/
+    dest: /opt/pprotein/data/
     mode: '0666'
     owner: root
     group: root
