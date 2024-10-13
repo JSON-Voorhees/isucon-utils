@@ -3,7 +3,7 @@ Description=pprotein-agent service
 
 [Service]
 ExecStart=/usr/local/bin/pprotein-agent
-WorkingDirectory=/home/{{ ansible_user }}
+WorkingDirectory=/opt/pprotein
 Environment=PATH=$PATH:/usr/bin:/usr/local/bin
 Restart=always
 User=root

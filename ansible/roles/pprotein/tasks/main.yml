@@ -11,6 +11,12 @@
     remote_src: true
   become: true
 
+- name: Create pprotein directory
+  ansible.builtin.file:
+    path: /opt/pprotein
+    state: directory
+    mode: '0755'
+
 - name: Place pprotein service file
   ansible.builtin.template:
     src: pprotein.service.j2
@@ -24,3 +30,11 @@
     dest: /etc/systemd/system/pprotein-agent.service
     mode: '0644'
   become: true
+
+- name: Copy setting files
+  ansible.builtin.copy:
+    src: files/
+    dest: /opt/pprotein/
+    mode: '0666'
+    owner: root
+    group: root

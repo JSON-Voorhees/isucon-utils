@@ -1,0 +1,20 @@
+[
+    {
+        "Type": "pprof",
+        "Label": "isu1",
+        "URL": "http://localhost:19001/debug/pprof/profile",
+        "Duration": 60
+    },
+    {
+        "Type": "httplog",
+        "Label": "isu1",
+        "URL": "http://localhost:19000/debug/log/httplog",
+        "Duration": 60
+    },
+    {
+        "Type": "slowlog",
+        "Label": "isu1",
+        "URL": "http://localhost:19000/debug/log/slowlog",
+        "Duration": 60
+    }
+]
