@@ -1,43 +1,50 @@
-####################
-# 以下はサンプル
-# alp の matching、アプリのビルド、設定ファイルのコピー等は状況に合わせて変えること
-####################
+####################################
+# 問題ごとに変わる設定
 
-# alp settings
-NGINX_LOG=/var/log/nginx/access.log
-MATCHING="/sample/[0-9]+,/sample/index"
-FIELDS=count,2xx,3xx,4xx,5xx,method,uri,min,max,sum,avg,p99
+USER := isucon
+SERVERS := isu1 isu2 isu3
 
-# slow query settings
-SQ_LOG=/var/log/mysql/mysql-slow.log
+BIN_NAME := isupipe
+SERVICE_NAME := $(BIN_NAME)-go.service
 
+ENV_FILE_NAME := env.sh
+ENV_FILE_PATH := /home/$(USER)/$(ENV_FILE_NAME)
 
-TIME=$(shell TZ=JST-9 date +"%H%M")
+APP_DIR := /home/$(USER)/webapp/go
+NGINX_DIR := /etc/nginx
+MYSQL_DIR := /etc/mysql
+SYSTEMD_DIR := /etc/systemd/system
+
+NGINX_LOG := /var/log/nginx/access.log
+MYSQL_SLOW_LOG := /var/log/mysql/mysql-slow.log
+
+GO := /home/$(USER)/local/golang/bin/go
+####################################
+
+####################################
+# 実行時のパラメータ
+
+## デプロイするブランチ(default: main)
+B ?= main
+####################################
+
+TIME = $(shell TZ=JST-9 date +"%H%M")
+HOSTNAME = $(shell hostname)
 #### analysis
 .PHONY: alp
 alp:
-	sudo alp ltsv --file ${NGINX_LOG} -m ${MATCHING} -o ${FIELDS} --sort sum --reverse | tee /tmp/alp-$(TIME).txt
-
-.PHONY: alp-slack
-alp-slack: alp
-	sed -e '1i ```' -e '$$a ```' /tmp/alp-$(TIME).txt | notify_slack
+	sudo alp ltsv --file ${NGINX_LOG} --config ./alp.yaml | tee /tmp/alp-$(TIME).txt
 
 .PHONY: pt
 pt:
-	sudo pt-query-digest ${SQ_LOG} | tee /tmp/pt-$(TIME).txt
-
-.PHONY: pt-slack
-pt-slack: pt
-	notify_slack /tmp/pt-$(TIME).txt
+	sudo pt-query-digest ${MYSQL_SLOW_LOG} | tee /tmp/pt-$(TIME).txt
 
 .PHONY: pprof
 pprof:
-	go tool pprof -http=localhost:9999 http://localhost:6060/debug/pprof/profile
+	$(GO) tool pprof -http=localhost:9999 http://localhost:6060/debug/pprof/profile
 
 
 #### deploy
-REPOSITORY ?= origin
-B ?= main
 .PHONY: deploy
 deploy: git-pull reset-log deploy-app deploy-nginx deploy-mysql
 
@@ -45,28 +52,61 @@ deploy: git-pull reset-log deploy-app deploy-nginx deploy-mysql
 git-pull:
 	git fetch && \
 	git checkout $(B) && \
-	git merge $(REPOSITORY)/$(B)
-
-.PHONY: deploy-app
-deploy-app:
-#	sudo cp ./isuconquest.go.service /etc/systemd/system/ && \
-	sudo cp ./env /home/isucon/ && \
-	cd /home/isucon/webapp/go/ && \
-	/home/isucon/local/golang/bin/go build -o isuconquest && \
-	sudo systemctl daemon-reload && \
-	sudo systemctl restart isuconquest.go.service
+	git merge origin/$(B)
 
 .PHONY: reset-log
 reset-log:
-	sudo bash -c 'echo "" > /var/log/nginx/access.log'
-	sudo bash -c 'echo "" > /var/log/mysql/mysql-slow.log'
+	sudo truncate -s 0 $(NGINX_LOG)
+	sudo truncate -s 0 $(MYSQL_SLOW_LOG)
+
+.PHONY: deploy-app
+deploy-app:
+	sudo cp ./$(SERVICE_NAME) $(SYSTEMD_DIR) && \
+	sudo cp ./$(ENV_FILE_NAME) $(ENV_FILE_PATH) && \
+	( [ ! -e "./$(HOSTNAME)/$(SERVICE_NAME)" ] || sudo cp ./$(HOSTNAME)/$(SERVICE_NAME) $(SYSTEMD_DIR) ) && \
+	( [ ! -e "./$(HOSTNAME)/$(ENV_FILE_NAME)" ] || sudo cp ./$(HOSTNAME)/$(ENV_FILE_NAME) $(ENV_FILE_PATH) ) && \
+	cd $(APP_DIR) && \
+	$(GO) build -o $(BIN_NAME) && \
+	sudo systemctl daemon-reload && \
+	sudo systemctl restart $(SERVICE_NAME)
 
 .PHONY: deploy-nginx
 deploy-nginx:
-	sudo cp -rf ./nginx/* /etc/nginx/ && \
+	sudo cp -rf ./nginx/* $(NGINX_DIR)/ && \
+	( [ ! -e "./$(HOSTNAME)/nginx" ] || sudo cp -rf ./$(HOSTNAME)/nginx/* $(NGINX_DIR) ) && \
 	sudo systemctl restart nginx
 
 .PHONY: deploy-mysql
 deploy-mysql:
-	sudo cp -rf ./mysql/* /etc/mysql/ && \
+	sudo cp -rf ./mysql/* $(MYSQL_DIR)/ && \
+	( [ ! -e "./$(HOSTNAME)/mysql" ] || sudo cp -rf ./$(HOSTNAME)/mysql/* $(MYSQL_DIR) ) && \
 	sudo systemctl restart mysql
+
+
+#### initialize
+.PHONY: initialize copy-all copy-nginx copy-mysql copy-systemd copy-env
+
+initialize: copy-all create-server-dir
+
+copy-all: copy-nginx copy-mysql copy-systemd copy-env
+
+copy-nginx:
+	sudo cp -rf $(NGINX_DIR) ./nginx
+	sudo chown $(USER) -R ./nginx
+	sudo mv $(NGINX_DIR){,.bak}
+
+copy-mysql:
+	sudo cp -rf $(MYSQL_DIR) ./nginx
+	sudo chown $(USER) -R ./nginx
+	sudo mv $(MYSQL_DIR){,.bak}
+
+copy-systemd:
+	sudo cp $(SYSTEMD_DIR)/$(SERVICE_NAME) ./
+	sudo mv $(SYSTEMD_DIR)/${SERVICE_NAME}{,.bak}
+
+# サーバーごとのディレクトリを作成して .gitkeep を作成
+KEEP_FILES := $(SERVERS:=/.gitkeep)
+create-server-dir: $(KEEP_FILES)
+
+$(KEEP_FILES):
+	mkdir -p $(@D) && touch $@
