@@ -8,6 +8,7 @@ SERVERS := isu1 isu2 isu3
 
 BIN_NAME := isupipe
 SERVICE_NAME := $(BIN_NAME)-go.service
+BUILD_CMD := make build
 
 ENV_FILE_NAME := env.sh
 ENV_FILE_PATH := /home/$(USER)/$(ENV_FILE_NAME)
@@ -72,7 +73,7 @@ deploy-app:
 	( [ ! -e "./$(HOSTNAME)/$(SERVICE_NAME)" ] || sudo cp ./$(HOSTNAME)/$(SERVICE_NAME) $(SYSTEMD_DIR) ) && \
 	( [ ! -e "./$(HOSTNAME)/$(ENV_FILE_NAME)" ] || sudo cp ./$(HOSTNAME)/$(ENV_FILE_NAME) $(ENV_FILE_PATH) ) && \
 	cd $(APP_DIR) && \
-	$(GO) build -o $(BIN_NAME) && \
+	$(BUILD_CMD) && \
 	sudo systemctl daemon-reload && \
 	sudo systemctl restart $(SERVICE_NAME)
 
