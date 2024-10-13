@@ -1,0 +1,12 @@
+- name: Install unzip
+  ansible.builtin.package:
+    name: zip
+    state: present
+  become: true
+
+- name: Install slp
+  ansible.builtin.unarchive:
+    src: https://github.com/tkuchiki/slp/releases/download/v0.2.1/slp_linux_amd64.zip
+    dest: /usr/local/bin
+    remote_src: true
+  become: true
