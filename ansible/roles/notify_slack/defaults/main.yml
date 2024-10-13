@@ -1,3 +1,0 @@
-notify_slack_username: notify_slack
-notify_slack_icon_emoji: ":rocket:"
-notify_slack_interval: 1s

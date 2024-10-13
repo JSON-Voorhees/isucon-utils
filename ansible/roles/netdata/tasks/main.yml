@@ -1,5 +1,0 @@
-- name: Install netdata
-  shell:
-    cmd: bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
-    executable: /bin/bash
-  become: true
