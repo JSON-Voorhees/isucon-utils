@@ -6,3 +6,8 @@
     owner: "{{ ssh_user }}"
     group: "{{ ssh_group }}"
   become: true
+
+- name: Run initialize
+  community.general.make:
+    target: initialize
+    chdir: "{{ webapp_dir }}"

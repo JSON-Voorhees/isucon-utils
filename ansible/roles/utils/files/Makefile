@@ -6,9 +6,11 @@ SHELL = /bin/bash
 USER := isucon
 SERVERS := isu1 isu2 isu3
 
+GO := /home/$(USER)/local/golang/bin/go
+
 BIN_NAME := isupipe
 SERVICE_NAME := $(BIN_NAME)-go.service
-BUILD_CMD := make build
+BUILD_CMD := make build	 # $(GO) build -o $(BIN_NAME)
 
 ENV_FILE_NAME := env.sh
 ENV_FILE_PATH := /home/$(USER)/$(ENV_FILE_NAME)
@@ -20,8 +22,6 @@ SYSTEMD_DIR := /etc/systemd/system
 
 NGINX_LOG := /var/log/nginx/access.log
 MYSQL_SLOW_LOG := /var/log/mysql/mysql-slow.log
-
-GO := /home/$(USER)/local/golang/bin/go
 ####################################
 
 ####################################
@@ -42,9 +42,9 @@ alp:
 slp:
 	sudo slp my --file ${MYSQL_SLOW_LOG} --config /opt/pprotein/data/slp.yml --dump /tmp/slp-$(TIME).yaml | tee /tmp/slp-$(TIME).txt
 
-.PHONY: alp-group
+.PHONY: set-alp-group
 alp-group:
-	cat $(APP_DIR)/main.go | grep -E '"(/[^/]+)+"' | sed -r 's#^.*"((/[^/]+)+)".*$$#  - \^\1\$$#g' | sed -r 's#(:[^/]+)#\[\^\/\]\+#g' | sort -r | uniq
+	cat $(APP_DIR)/main.go | grep -E '"(/[^/]+)+"' | sed -r 's#^.*"((/[^/]+)+)".*$$#  - \^\1\$$#g' | sed -r 's#(:[^/]+)#\[\^\/\]\+#g' | sort -r | uniq | sudo tee -a /opt/pprotein/data/alp.yml
 
 .PHONY: pt
 pt:
