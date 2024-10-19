@@ -1,0 +1,24 @@
+[mysqld]
+
+# binlog を切る
+disable-log-bin
+
+# ログの書き込みを1秒に1回にする
+innodb_flush_log_at_trx_commit = 0
+
+# 二重書き込みバッファを無効化する
+innodb_doublewrite = 0
+
+
+# 以降はデフォルトオフ（状況に応じてコメントアウト）
+
+# 最大同時コネクション数（足りなければ増やす）
+# max_connections=500
+
+# バッファープールサイズを大きくする（メモリの75%ぐらい）
+# innodb_buffer_pool_size = 3GB
+
+# バッファープールのインスタンスを増やす
+## innodb_buffer_pool_size / innodb_buffer_pool_instances が 1GB 以上になるようにする
+## innodb_buffer_pool_size が innodb_buffer_pool_chunk_size (128M) * innodb_buffer_pool_instances の倍数となるようにする
+# innodb_buffer_pool_instances = 3

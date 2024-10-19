@@ -25,6 +25,15 @@
     group: root
   become: true
 
+- name: Copy custom conf
+  ansible.builtin.copy:
+    src: files/custom.cnf
+    dest: /etc/mysql/mysql.conf.d/
+    mode: "0644"
+    owner: root
+    group: root
+  become: true
+
 - name: Restart mysql
   ansible.builtin.service:
     name: mysql
