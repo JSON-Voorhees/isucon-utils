@@ -4,11 +4,12 @@
   remote_user: root
   roles:
     - hostname
-    - apt
     - ssh
+    - apt
     - git
     - nginx
     - mysql
+    - utils
     - redis
     - alp
     - slp
@@ -16,4 +17,3 @@
     - pprotein
     - htop
     - graphviz
-    - utils
