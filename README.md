@@ -33,11 +33,14 @@
     $ ssh isu1
     $ cd webapp/    # 問題によって違う可能性あり
     $ git init
-    # 画像等サイズの大きなファイルは .gitignore へ入れる
+
+    # 以下のコマンドを実行し、画像等サイズの大きなファイルは .gitignore へ入れる
+    $ du --max-depth 1 -h
+
     $ git add .
     $ git branch -M main
     $ git remote add origin ＜リポジトリ＞
-    $ git push
+    $ git push -u origin main
     ```
 6. isu2, isu3 へログインし、webapp を git 管理にする
     ```bash
@@ -53,15 +56,17 @@
     ```
 7. ローカルで git pull
 8. Makefile の「問題ごとに変わる設定」に値を入力して、commit & push
-9. このリポジトリの `./deploy-all.sh` を実行して全サーバーへデプロイ実行
+    * `SERVICE_NAME` は `systemctl list-unit-files | grep -e go -e isu` あたりで確認
+9. isu1 上でデプロイ実行
     ```bash
-    $ ./deploy-all.sh
+    $ make deploy
     ```
-10. isu1 上で `make alp-group` を実行し、出力されたパターンを pprotein の httplog/config の `matching_groups` に設定する
+10. isu1 上で `make set-alp-group` を実行し、pprotein の alp 設定に API のパターンを登録する
 11. pprotein で pprof を有効化する
     ```bash
-    $ cd webapp/go
+    $ cd go
     $ go get github.com/kaz/pprotein/integration/standalone
+    $ go mod tidy
     ```
 
     ```go
@@ -79,3 +84,5 @@
 	}()
     ```
 13. ベンチマークを実行する
+14. pprotein の結果を確認する
+    * http://localhost:9000/#/group/
