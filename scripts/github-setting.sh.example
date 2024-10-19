@@ -1,3 +1,0 @@
-export GITHUB_USER="username"
-export GITHUB_TOKEN="personal_access_token"
-export GITHUB_ISSUE="{owner}/{repo}/issues/{id}"
