@@ -11,12 +11,14 @@
     remote_src: true
   become: true
 
+# pprotein は isu1 でのみ有効化
 - name: Create pprotein data directory
   ansible.builtin.file:
     path: /opt/pprotein/data
     state: directory
     mode: '0755'
   become: true
+  when: inventory_hostname == 'isu1'
 
 - name: Place pprotein service file
   ansible.builtin.copy:
@@ -26,15 +28,7 @@
     owner: root
     group: root
   become: true
-
-- name: Place pprotein-agent service file
-  ansible.builtin.copy:
-    src: files/pprotein-agent.service
-    dest: /etc/systemd/system/pprotein-agent.service
-    mode: '0644'
-    owner: root
-    group: root
-  become: true
+  when: inventory_hostname == 'isu1'
 
 - name: Copy setting files
   ansible.builtin.copy:
@@ -44,3 +38,30 @@
     owner: root
     group: root
   become: true
+  when: inventory_hostname == 'isu1'
+
+- name: Start pprotein
+  ansible.builtin.service:
+    name: pprotein
+    state: started
+    enabled: true
+  become: true
+  when: inventory_hostname == 'isu1'
+
+# pprotein-agent は全ホストで有効化
+- name: Place pprotein-agent service file
+  ansible.builtin.copy:
+    src: files/pprotein-agent.service
+    dest: /etc/systemd/system/pprotein-agent.service
+    mode: '0644'
+    owner: root
+    group: root
+  become: true
+
+- name: Start pprotein-agent
+  ansible.builtin.service:
+    name: pprotein-agent
+    state: started
+    enabled: true
+  become: true
+  when: inventory_hostname == 'isu1'
