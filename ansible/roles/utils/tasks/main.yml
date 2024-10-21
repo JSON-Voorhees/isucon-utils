@@ -1,11 +1,34 @@
-- name: Copy util files
-  ansible.builtin.copy:
-    src: files/
-    dest: "{{ webapp_dir }}"
+- name: Install make
+  ansible.builtin.package:
+    name: make
+    state: present
+  become: true
+
+- name: Copy Makefile (Ubuntu)
+  ansible.builtin.template:
+    src: templates/Makefile.j2
+    dest: "{{ webapp_dir }}/Makefile"
     mode: "0755"
     owner: "{{ ssh_user }}"
     group: "{{ ssh_group }}"
   become: true
+  when: ansible_distribution == 'Ubuntu'
+  vars:
+    mysql_dir: /etc/mysql
+    mysql_service: mysql
+
+- name: Copy Makefile (Rocky)
+  ansible.builtin.template:
+    src: templates/Makefile.j2
+    dest: "{{ webapp_dir }}/Makefile"
+    mode: "0755"
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_group }}"
+  become: true
+  when: ansible_distribution == 'Rocky'
+  vars:
+    mysql_dir: /etc/my.cnf.d
+    mysql_service: mysqld
 
 - name: Run initialize
   community.general.make:

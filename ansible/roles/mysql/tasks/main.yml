@@ -16,26 +16,36 @@
     mode: "0644"
   become: true
 
-- name: Copy slow log conf
+- name: Copy configs (Ubuntu)
   ansible.builtin.copy:
-    src: files/slow_log.cnf
+    src: files/
     dest: /etc/mysql/mysql.conf.d/
     mode: "0644"
     owner: root
     group: root
   become: true
+  when: ansible_distribution == 'Ubuntu'
 
-- name: Copy custom conf
-  ansible.builtin.copy:
-    src: files/custom.cnf
-    dest: /etc/mysql/mysql.conf.d/
-    mode: "0644"
-    owner: root
-    group: root
-  become: true
-
-- name: Restart mysql
+- name: Restart mysql (Ubuntu)
   ansible.builtin.service:
     name: mysql
     state: restarted
   become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Copy configs (Rocky)
+  ansible.builtin.copy:
+    src: files/
+    dest: /etc/my.cnf.d/
+    mode: "0644"
+    owner: root
+    group: root
+  become: true
+  when: ansible_distribution == 'Rocky'
+
+- name: Restart mysql (Rocky)
+  ansible.builtin.service:
+    name: mysqld
+    state: restarted
+  become: true
+  when: ansible_distribution == 'Rocky'

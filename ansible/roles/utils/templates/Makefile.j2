@@ -3,7 +3,7 @@ SHELL = /bin/bash
 ####################################
 # 問題ごとに変わる設定
 
-USER := isucon
+USER := {{ ssh_user }}
 SERVERS := isu1 isu2 isu3
 
 GO := /home/$(USER)/local/golang/bin/go
@@ -14,14 +14,6 @@ BUILD_CMD := make build	 # $(GO) build -o $(BIN_NAME)
 
 ENV_FILE_NAME := env.sh
 ENV_FILE_PATH := /home/$(USER)/$(ENV_FILE_NAME)
-
-APP_DIR := /home/$(USER)/webapp/go
-NGINX_DIR := /etc/nginx
-MYSQL_DIR := /etc/mysql
-SYSTEMD_DIR := /etc/systemd/system
-
-NGINX_LOG := /var/log/nginx/access.log
-MYSQL_SLOW_LOG := /var/log/mysql/mysql-slow.log
 ####################################
 
 ####################################
@@ -30,6 +22,14 @@ MYSQL_SLOW_LOG := /var/log/mysql/mysql-slow.log
 ## デプロイするブランチ(default: main)
 B ?= main
 ####################################
+
+APP_DIR := {{ webapp_dir }}/go
+NGINX_DIR := {{ nginx_dir }}
+MYSQL_DIR := {{ mysql_dir }}
+SYSTEMD_DIR := {{ systemd_dir }}
+NGINX_LOG := /var/log/nginx/access.log
+MYSQL_SLOW_LOG := /var/log/mysql/mysql-slow.log
+MYSQL_SERVICE := {{ mysql_service }}
 
 TIME = $(shell TZ=JST-9 date +"%H%M")
 HOSTNAME = $(shell hostname)
@@ -49,10 +49,6 @@ alp-group:
 .PHONY: pt
 pt:
 	sudo pt-query-digest ${MYSQL_SLOW_LOG} | tee /tmp/pt-$(TIME).txt
-
-.PHONY: pprof
-pprof:
-	$(GO) tool pprof -http=localhost:9999 http://localhost:6060/debug/pprof/profile
 
 
 #### deploy
@@ -91,7 +87,7 @@ deploy-nginx:
 deploy-mysql:
 	sudo cp -rf ./mysql/* $(MYSQL_DIR)/ && \
 	( [ ! -e "./$(HOSTNAME)/mysql" ] || sudo cp -rf ./$(HOSTNAME)/mysql/* $(MYSQL_DIR) ) && \
-	sudo systemctl restart mysql
+	sudo systemctl restart $(MYSQL_SERVICE)
 
 
 #### initialize

@@ -1,1 +1,6 @@
 webapp_dir: /home/isucon/webapp
+nginx_dir: /etc/nginx
+mysql_dir: /etc/mysql
+systemd_dir: /etc/systemd/system
+
+mysql_service: mysql
