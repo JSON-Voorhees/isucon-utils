@@ -97,21 +97,25 @@ initialize: copy-all create-server-dir
 
 copy-all: copy-nginx copy-mysql copy-systemd copy-env
 
-copy-nginx:
+copy-nginx: ./nginx
+./nginx:
 	sudo cp -rf $(NGINX_DIR) ./nginx
 	sudo chown $(USER) -R ./nginx
 	sudo cp -rf $(NGINX_DIR) $(NGINX_DIR).bak
 
-copy-mysql:
+copy-mysql: ./mysql
+./mysql:
 	sudo cp -rf $(MYSQL_DIR) ./mysql
 	sudo chown $(USER) -R ./mysql
 	sudo cp -rf $(MYSQL_DIR) $(MYSQL_DIR).bak
 
-copy-systemd:
+copy-systemd: ./$(SERVICE_NAME)
+./$(SERVICE_NAME):
 	sudo cp $(SYSTEMD_DIR)/$(SERVICE_NAME) ./
 	sudo cp -rf $(SYSTEMD_DIR)/${SERVICE_NAME} $(SYSTEMD_DIR)/${SERVICE_NAME}.bak
 
-copy-env:
+copy-env: ./$(ENV_FILE_NAME)
+./$(ENV_FILE_NAME):
 	sudo cp $(ENV_FILE_PATH) ./
 	sudo cp -rf $(ENV_FILE_PATH) $(ENV_FILE_PATH).bak
 
