@@ -13,6 +13,14 @@
   become: true
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Rocky'
 
+- name: Setup repo (Rocky)
+  ansible.builtin.command:
+    cmd: percona-release setup pt
+  become: true
+  register: setup
+  changed_when: setup.rc == 0
+  when: ansible_distribution == 'Rocky'
+
 - name: Install pt-query-digest (centos or rocky)
   ansible.builtin.yum:
     name: percona-toolkit
