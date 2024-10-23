@@ -16,14 +16,10 @@
     group: "{{ ssh_group }}"
   become: true
 
-- name: Create deploy key
-  community.crypto.openssh_keypair:
-    path: "/home/{{ ssh_user }}/.ssh/id_ed25519"
-    type: ed25519
+- name: Copy deploy key
+  community.crypto.copy:
+    src: "files/deploy_keys/{{ github_repo }}/id_ed25519"
+    dest: "/home/{{ ssh_user }}/.ssh/id_ed25519"
+    mode: "0600"
   become: true
   become_user: "{{ ssh_user }}"
-  register: deploy_key
-
-- name: Print deploy key
-  ansible.builtin.debug:
-    msg: "{{ deploy_key.public_key }}"
