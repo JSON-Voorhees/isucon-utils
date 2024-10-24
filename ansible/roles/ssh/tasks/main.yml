@@ -17,7 +17,7 @@
   become: true
 
 - name: Copy deploy key
-  community.crypto.copy:
+  ansible.builtin.copy:
     src: "files/deploy_keys/{{ github_repo }}/id_ed25519"
     dest: "/home/{{ ssh_user }}/.ssh/id_ed25519"
     mode: "0600"
