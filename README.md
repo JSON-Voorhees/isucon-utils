@@ -1,5 +1,12 @@
 # ISUCON チートシート
 
+## 事前にやること
+* `./create-gh-repo.sh` で GitHub リポジトリを作成しておく（デプロイキーの登録も行われる）
+    ```bash
+    $ ./create-gh-repo.sh JSON-Voorhees/repo_name
+    ```
+* `ansible/hosts` の `github_repo` に作成したリポジトリ名を設定する
+
 ## 最初にやること手順
 1. 手順に従ってインスタンスを立てる
 1. 立ち上がったらグローバルIPアドレスを確認し、ローカルの `~/.ssh/config` に反映する
