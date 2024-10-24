@@ -1,0 +1,8 @@
+---
+- name: Deploy
+  hosts: webservers
+  tasks:
+    - name: Run deploy
+      community.general.make:
+        target: deploy
+        chdir: "{{ webapp_dir }}"
