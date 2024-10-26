@@ -1,0 +1,5 @@
+---
+- name: Start Monitoring
+  hosts: webservers
+  roles:
+    - start-monitoring

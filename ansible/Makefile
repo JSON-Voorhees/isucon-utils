@@ -10,3 +10,6 @@ deploy:
 
 stop-monitoring:
 	ansible-playbook -i hosts stop-monitoring.yml
+
+start-monitoring:
+	ansible-playbook -i hosts start-monitoring.yml

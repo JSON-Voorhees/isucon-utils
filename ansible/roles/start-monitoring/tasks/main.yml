@@ -1,0 +1,27 @@
+- name: Start monitoring services for all
+  with_items:
+    - pprotein-agent
+    - node_exporter
+    - process_exporter
+    - datadog-agent
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  become: true
+  register: start_monitoring
+  failed_when: "start_monitoring is failed and 'Could not find the requested service' not in start_monitoring.msg"
+
+- name: Start monitoring services for isu1
+  with_items:
+    - pprotein
+    - grafana
+    - prometheus
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  become: true
+  when: inventory_hostname == 'isu1'
+  register: start_monitoring_isu1
+  failed_when: "start_monitoring_isu1 is failed and 'Could not find the requested service' not in start_monitoring_isu1.msg"
