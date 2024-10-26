@@ -1,0 +1,27 @@
+- name: Stop monitoring services for all
+  with_items:
+    - pprotein-agent
+    - node_exporter
+    - process_exporter
+    - datadog-agent
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  become: true
+  register: stop_monitoring
+  failed_when: "stop_monitoring is failed and 'Could not find the requested service' not in stop_monitoring.msg"
+
+- name: Stop monitoring services for isu1
+  with_items:
+    - pprotein
+    - grafana
+    - prometheus
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  become: true
+  when: inventory_hostname == 'isu1'
+  register: stop_monitoring_isu1
+  failed_when: "stop_monitoring_isu1 is failed and 'Could not find the requested service' not in stop_monitoring_isu1.msg"

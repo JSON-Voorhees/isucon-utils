@@ -1,0 +1,5 @@
+---
+- name: Stop Monitoring
+  hosts: webservers
+  roles:
+    - stop-monitoring

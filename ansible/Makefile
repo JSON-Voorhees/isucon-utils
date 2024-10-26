@@ -7,3 +7,6 @@ run-rehearsal:
 
 deploy:
 	ansible-playbook -i hosts deployment.yml
+
+stop-monitoring:
+	ansible-playbook -i hosts stop-monitoring.yml
