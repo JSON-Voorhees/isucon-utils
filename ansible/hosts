@@ -1,7 +1,7 @@
 [webservers]
 isu1
-isu2
-isu3
+#isu2
+#isu3
 
 [webservers:vars]
 ansible_port=22
@@ -12,5 +12,12 @@ ssh_user=isucon
 ssh_group=isucon
 
 webapp_dir=/home/isucon/webapp
+
+nginx_dir=/etc/nginx
+
+systemd_dir=/etc/systemd/system
+
+mysql_dir=/etc/mysql
+mysql_service=mysql
 
 github_repo=JSON-Voorhees/isucon14
