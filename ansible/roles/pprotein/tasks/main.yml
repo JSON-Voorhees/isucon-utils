@@ -64,4 +64,3 @@
     state: started
     enabled: true
   become: true
-  when: inventory_hostname == 'isu1'
