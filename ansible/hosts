@@ -1,7 +1,7 @@
 [webservers]
 isu1
-#isu2
-#isu3
+isu2
+isu3
 
 [webservers:vars]
 ansible_port=22
@@ -20,4 +20,4 @@ systemd_dir=/etc/systemd/system
 mysql_dir=/etc/mysql
 mysql_service=mysql
 
-github_repo=JSON-Voorhees/isucon14
+github_repo=youdofoo/isucon-rehearsal

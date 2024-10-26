@@ -1,8 +1,11 @@
 ---
 - name: Deploy
   hosts: webservers
+  gather_facts: false
   tasks:
     - name: Run deploy
       community.general.make:
         target: deploy
         chdir: "{{ webapp_dir }}"
+      environment:
+        B: "{{ branch }}"

@@ -15,7 +15,7 @@
 - name: Stop monitoring services for isu1
   with_items:
     - pprotein
-    - grafana
+    - grafana-server
     - prometheus
   ansible.builtin.service:
     name: "{{ item }}"

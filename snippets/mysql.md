@@ -13,7 +13,8 @@ SELECT user, host FROM mysql.user
 
 もし、isuconユーザーがホスト`%`で登録されていなかったら
 ```sql
-GRANT ALL PRIVILEGES ON *.* TO "isucon"@"%";
+CREATE USER `isucon`@`%` IDENTIFIED BY 'isucon'; 
+GRANT ALL PRIVILEGES ON *.* TO `isucon`@`%`;
 ```
 で権限付与
 

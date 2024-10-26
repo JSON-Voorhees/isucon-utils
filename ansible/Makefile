@@ -5,8 +5,9 @@ run:
 run-rehearsal:
 	ansible-playbook -i hosts rehearsal.yml
 
+B ?= main
 deploy:
-	ansible-playbook -i hosts deployment.yml
+	ansible-playbook -i hosts deployment.yml --extra-vars "branch=$(B)"
 
 stop-monitoring:
 	ansible-playbook -i hosts stop-monitoring.yml

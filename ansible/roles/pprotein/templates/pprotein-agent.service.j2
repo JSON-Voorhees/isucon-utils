@@ -5,6 +5,7 @@ Description=pprotein-agent service
 ExecStart=/usr/local/bin/pprotein-agent
 WorkingDirectory=/opt/pprotein
 Environment=PATH=$PATH:/usr/bin:/usr/local/bin
+Environment=PPROTEIN_GIT_REPOSITORY={{ web_dir }}
 Restart=always
 User=root
 

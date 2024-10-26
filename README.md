@@ -45,7 +45,6 @@
     $ cd ./ansible
     $ make run
     ```
-1. ssh 設定時に出力された台数分の公開鍵を GitHub のデプロイキーに登録する
 1. isu1 へログインし、webapp を git 管理にする
     ```bash
     $ ssh isu1
@@ -57,6 +56,7 @@
 
     $ git add .
     $ git branch -M main
+    $ git commit -m "initial"
     $ git remote add origin ＜リポジトリ＞
     $ git push -u origin main
     ```
@@ -79,10 +79,9 @@
     ```bash
     $ make deploy
     ```
-1. isu1 上で `make set-alp-group` を実行し、pprotein の alp 設定に API のパターンを登録する
+1. isu1 上で `make alp-group` を実行し、pprotein の alp 設定に API のパターンを登録する
 1. pprotein で pprof を有効化する
     ```bash
-    $ cd go
     $ go get github.com/kaz/pprotein/integration/standalone
     $ go mod tidy
     ```
@@ -101,6 +100,7 @@
 		}
 	}()
     ```
+1. git commit & push し、デプロイする
 1. ベンチマークを実行する
 1. pprotein の結果を確認する
     * http://localhost:9000/#/group/
