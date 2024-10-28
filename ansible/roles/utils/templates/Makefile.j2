@@ -43,7 +43,7 @@ slp:
 	sudo slp my --file ${MYSQL_SLOW_LOG} --config /opt/pprotein/data/slp.yml --dump /tmp/slp-$(TIME).yaml | tee /tmp/slp-$(TIME).txt
 
 .PHONY: set-alp-group
-alp-group:
+set-alp-group:
 	cat $(APP_DIR)/main.go | grep -E '"(/[^/]+)+"' | sed -r 's#^.*"((/[^/]+)+)".*$$#  - \^\1\$$#g' | sed -r 's#(:[^/]+)#\[\^\/\]\+#g' | sort -r | uniq | sudo tee -a /opt/pprotein/data/alp.yml
 
 .PHONY: pt
