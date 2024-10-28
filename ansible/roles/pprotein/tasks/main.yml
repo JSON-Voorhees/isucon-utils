@@ -29,6 +29,12 @@
   become: true
   when: inventory_hostname == 'isu1'
 
+- name: Check setting files existence
+  ansible.builtin.stat:
+    path: /opt/pprotein/data/targets.json
+  register: setting_files
+  when: inventory_hostname == 'isu1'
+
 - name: Copy setting files
   ansible.builtin.copy:
     src: files/settings/
@@ -37,7 +43,7 @@
     owner: root
     group: root
   become: true
-  when: inventory_hostname == 'isu1'
+  when: inventory_hostname == 'isu1' and not setting_files.stat.exists
 
 - name: Start pprotein
   ansible.builtin.service:

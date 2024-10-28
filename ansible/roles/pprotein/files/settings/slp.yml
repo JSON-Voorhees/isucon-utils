@@ -4,4 +4,4 @@ limit: 65536
 sort: sum-query-time
 reverse: true
 percentiles: 95,99
-output: query,count,sum-query-time,avg-query-time,p95-query-time,p99-query-time,sum-rows-examined,avg-rows-examined,sum-rows-sent,avg-rows-sent,sum-lock-time,avg-lock-time,sum-bytes-sent,avg-bytes-sent
+output: query,count,sum-query-time,avg-query-time,p95-query-time,p99-query-time,avg-rows-examined,avg-rows-sent,sum-lock-time,avg-lock-time
