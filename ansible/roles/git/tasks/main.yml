@@ -44,3 +44,30 @@
     value: "{{ git_user }}"
   become: true
   become_user: "{{ git_user }}"
+
+- name: Init git on webapp dir
+  ansible.builtin.command:
+    cmd: git init
+    chdir: "{{ webapp_dir }}"
+  become: true
+  become_user: "{{ git_user }}"
+  register: git_init
+  changed_when: git_init.rc == 0
+
+- name: Change default branch name
+  ansible.builtin.command:
+    cmd: git branch -M main
+    chdir: "{{ webapp_dir }}"
+  become: true
+  become_user: "{{ git_user }}"
+  register: git_branch
+  changed_when: git_branch.rc == 0
+
+- name: Set remote repository
+  ansible.builtin.command:
+    cmd: "git remote add repo origin git@github.com:{{ github_repo }}.git"
+    chdir: "{{ webapp_dir }}"
+  become: true
+  become_user: "{{ git_user }}"
+  register: git_remote
+  changed_when: git_remote.rc == 0
