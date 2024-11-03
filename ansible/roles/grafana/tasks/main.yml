@@ -1,0 +1,119 @@
+- name: Install Grafana for isu1 (Ubuntu)
+  when: inventory_hostname == 'isu1' and ansible_distribution == 'Ubuntu'
+  become: true
+  block:
+    - name: Install prerequisite package
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - software-properties-common
+        state: present
+
+    - name: Import GPG key
+      ansible.builtin.get_url:
+        url: https://apt.grafana.com/gpg.key
+        dest: /etc/apt/keyrings/grafana.asc
+        mode: '0644'
+
+    - name: Add Grafana repo
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/grafana.asc] https://apt.grafana.com stable main"
+        state: present
+
+    - name: Install Grafana
+      ansible.builtin.apt:
+        name: grafana
+        state: present
+
+    - name: Start Grafana
+      ansible.builtin.systemd_service:
+        name: grafana-server
+        state: started
+        enabled: true
+
+- name: Install Grafana for isu1 (Rocky)
+  when: inventory_hostname == 'isu1' and ansible_distribution == 'Rocky'
+  become: true
+  block:
+    - name: Import GPG key
+      ansible.builtin.rpm_key:
+        key: https://rpm.grafana.com/gpg.key
+        state: present
+
+    - name: Add Grafana repo
+      ansible.builtin.yum_repository:
+        name: grafana
+        baseurl:
+          - https://rpm.grafana.com
+        repo_gpgcheck: true
+        gpgcheck: true
+        gpgkey:
+          - https://rpm.grafana.com/gpg.key
+        sslverify: true
+        sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+        enabled: true
+        description: 'Grafana repository'
+
+    - name: Install Grafana
+      ansible.builtin.dnf:
+        name:
+          - grafana
+          # RHEL9 だと enable 時にエラーとなるため chkconfig をインストールする
+          # https://github.com/grafana/grafana/issues/92949
+          - chkconfig
+        state: present
+
+    - name: Start Grafana
+      ansible.builtin.systemd_service:
+        name: grafana-server
+        state: started
+        enabled: true
+
+- name: Setup Grafana for isu1
+  when: inventory_hostname == 'isu1'
+  become: true
+  block:
+    - name: Copy setting file
+      ansible.builtin.copy:
+        src: files/grafana.ini
+        dest: /etc/grafana/grafana.ini
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Copy datasource config
+      ansible.builtin.copy:
+        src: files/datasources.yml
+        dest: /etc/grafana/provisioning/datasources/
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Copy dashboard config
+      ansible.builtin.copy:
+        src: files/dashboard.yml
+        dest: /etc/grafana/provisioning/dashboards/
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Create dashboard JSON directory
+      ansible.builtin.file:
+        path: /var/lib/grafana/dashboards
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Copy dashboard JSON
+      ansible.builtin.copy:
+        src: files/isucon.json
+        dest: /var/lib/grafana/dashboards/
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Restart grafana
+      ansible.builtin.systemd_service:
+        name: grafana-server
+        state: restarted

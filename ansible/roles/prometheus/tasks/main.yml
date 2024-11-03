@@ -1,0 +1,131 @@
+- name: Install Prometheus for isu1
+  when: inventory_hostname == 'isu1'
+  become: true
+  vars:
+    prometheus_version: "2.53.2"
+  block:
+    - name: Download Prometheus
+      ansible.builtin.unarchive:
+        src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+        dest: /usr/local/
+        remote_src: true
+
+    - name: Create symlink
+      ansible.builtin.file:
+        src: "/usr/local/prometheus-{{ prometheus_version }}.linux-amd64/prometheus"
+        dest: /usr/local/bin/prometheus
+        state: link
+
+    - name: Create config directory
+      ansible.builtin.file:
+        path: /etc/prometheus
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Copy config
+      ansible.builtin.template:
+        src: templates/prometheus.yml.j2
+        dest: /etc/prometheus/prometheus.yml
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Create data directory
+      ansible.builtin.file:
+        path: /var/lib/prometheus/data
+        state: directory
+        mode: '0755'
+
+    - name: Place service file
+      ansible.builtin.copy:
+        src: files/prometheus.service
+        dest: /etc/systemd/system/
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Start Prometheus
+      ansible.builtin.systemd_service:
+        name: prometheus
+        state: started
+        enabled: true
+
+- name: Install node_exporter
+  become: true
+  vars:
+    node_exporter_version: "1.8.2"
+  block:
+    - name: Download node_exporter
+      ansible.builtin.unarchive:
+        src: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: /usr/local/
+        remote_src: true
+
+    - name: Create node_exporter symlink
+      ansible.builtin.file:
+        src: /usr/local/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter
+        dest: /usr/local/bin/node_exporter
+        state: link
+
+    - name: Place node_exporter service file
+      ansible.builtin.copy:
+        src: files/node_exporter.service
+        dest: /etc/systemd/system/
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Start node_exporter
+      ansible.builtin.systemd_service:
+        name: node_exporter
+        state: started
+        enabled: true
+
+- name: Install process-exporter
+  become: true
+  vars:
+    process_exporter_version: "0.8.4"
+  block:
+    - name: Downlload process-exporter
+      ansible.builtin.unarchive:
+        src: "https://github.com/ncabatoff/process-exporter/releases/download/v{{ process_exporter_version }}/process-exporter-{{ process_exporter_version }}.linux-amd64.tar.gz"
+        dest: /usr/local/
+        remote_src: true
+
+    - name: Create process-exporter symlink
+      ansible.builtin.file:
+        src: /usr/local/process-exporter-{{ process_exporter_version }}.linux-amd64/process-exporter
+        dest: /usr/local/bin/process-exporter
+        state: link
+
+    - name: Create process-exporter config directory
+      ansible.builtin.file:
+        path: /etc/process-exporter
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Copy process-exporter config file
+      ansible.builtin.copy:
+        src: files/process-exporter.config.yml
+        dest: /etc/process-exporter/config.yml
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Place process-exporter service file
+      ansible.builtin.copy:
+        src: files/process-exporter.service
+        dest: /etc/systemd/system/
+        mode: '0666'
+        owner: root
+        group: root
+
+    - name: Start process-exporter
+      ansible.builtin.systemd_service:
+        name: process-exporter
+        state: started
+        enabled: true
