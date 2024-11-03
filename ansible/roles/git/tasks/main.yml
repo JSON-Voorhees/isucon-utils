@@ -65,9 +65,10 @@
 
 - name: Set remote repository
   ansible.builtin.command:
-    cmd: "git remote add repo origin git@github.com:{{ github_repo }}.git"
+    cmd: "git remote add origin git@github.com:{{ github_repo }}.git"
     chdir: "{{ webapp_dir }}"
   become: true
   become_user: "{{ git_user }}"
   register: git_remote
   changed_when: git_remote.rc == 0
+  failed_when: git_remote.rc != 0 and 'remote origin already exists' not in git_remote.stderr
