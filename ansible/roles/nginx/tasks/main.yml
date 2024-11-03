@@ -28,7 +28,7 @@
   when: access_log_stat.stat.exists
 
 - name: Restart nginx
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: nginx
     state: restarted
   become: true

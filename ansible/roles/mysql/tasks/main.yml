@@ -27,7 +27,7 @@
   when: ansible_distribution == 'Ubuntu'
 
 - name: Restart mysql (Ubuntu)
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: mysql
     state: restarted
   become: true
@@ -44,7 +44,7 @@
   when: ansible_distribution == 'Rocky'
 
 - name: Restart mysql (Rocky)
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: mysqld
     state: restarted
   become: true

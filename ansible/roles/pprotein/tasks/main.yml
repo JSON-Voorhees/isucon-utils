@@ -46,7 +46,7 @@
   when: inventory_hostname == 'isu1' and not setting_files.stat.exists
 
 - name: Start pprotein
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: pprotein
     state: started
     enabled: true
@@ -64,7 +64,7 @@
   become: true
 
 - name: Start pprotein-agent
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: pprotein-agent
     state: started
     enabled: true

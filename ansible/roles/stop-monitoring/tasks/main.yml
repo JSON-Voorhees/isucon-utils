@@ -4,7 +4,7 @@
     - node_exporter
     - process_exporter
     - datadog-agent
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: "{{ item }}"
     state: stopped
     enabled: false
@@ -17,7 +17,7 @@
     - pprotein
     - grafana-server
     - prometheus
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: "{{ item }}"
     state: stopped
     enabled: false
