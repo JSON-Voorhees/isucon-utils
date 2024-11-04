@@ -1,0 +1,15 @@
+- name: Check existence of .bash_profile
+  ansible.builtin.stat:
+    path: /home/{{ ssh_user }}/.bash_profile
+  register: bash_profile
+  become: true
+  become_user: "{{ ssh_user }}"
+
+- name: Copy .bash_profile if not exists
+  ansible.builtin.copy:
+    src: files/bash_profile
+    dest: /home/{{ ssh_user }}/.bash_profile
+    mode: '0644'
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+  when: not bash_profile.stat.exists

@@ -1,0 +1,37 @@
+- name: Remove existing Go
+  ansible.builtin.file:
+    path: /usr/local/go
+    state: absent
+  become: true
+
+- name: Download Go
+  ansible.builtin.unarchive:
+    remote_src: true
+    src: https://go.dev/dl/go1.23.2.linux-amd64.tar.gz
+    dest: /usr/local/
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
+
+- name: Check existence of .bash_profile
+  ansible.builtin.stat:
+    path: /home/{{ ssh_user }}/.bash_profile
+  register: bash_profile
+  become: true
+  become_user: "{{ ssh_user }}"
+
+- name: Add PATH if bash_profile exists
+  ansible.builtin.lineinfile:
+    path: /home/{{ ssh_user }}/.bash_profile
+    line: "export PATH=/usr/local/go/bin:$PATH"
+  become: true
+  become_user: "{{ ssh_user }}"
+  when: bash_profile.stat.exists
+
+- name: Create symlink
+  ansible.builtin.file:
+    src: /usr/local/go/bin/go
+    dest: /usr/local/bin/go
+    state: link
+  become: true
