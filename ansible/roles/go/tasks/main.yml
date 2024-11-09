@@ -7,7 +7,7 @@
 - name: Download Go
   ansible.builtin.unarchive:
     remote_src: true
-    src: https://go.dev/dl/go1.23.2.linux-amd64.tar.gz
+    src: https://go.dev/dl/go1.23.3.linux-amd64.tar.gz
     dest: /usr/local/
     mode: '0755'
     owner: root
@@ -25,6 +25,14 @@
   ansible.builtin.lineinfile:
     path: /home/{{ ssh_user }}/.bash_profile
     line: "export PATH=/usr/local/go/bin:$PATH"
+  become: true
+  become_user: "{{ ssh_user }}"
+  when: bash_profile.stat.exists
+
+- name: Add GOROOT
+  ansible.builtin.lineinfile:
+    path: /home/{{ ssh_user }}/.bash_profile
+    line: "export GOROOT=/usr/local/go/"
   become: true
   become_user: "{{ ssh_user }}"
   when: bash_profile.stat.exists
