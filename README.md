@@ -31,8 +31,8 @@
         ServerAliveCountMax 5
         StrictHostKeyChecking no
     ```
-1. isu1 へログインし、ディレクトリ構成や起動しているサービス、システム情報を確認する。確認の結果 `ansible/hosts` や `roles/` の修正が必要であれば行う
-    * チェックリスト（下記のいずれかが違うなら修正が必要）
+1. isu1 へログインし、ディレクトリ構成や起動しているサービス、システム情報を確認する。確認の結果に応じて hosts や Makefile 等の修正を行う
+    * チェックリスト
       * アプリのディレクトリは `/home/isucon/webapp` か
         ```bash
         # isu1 で実行
@@ -52,6 +52,22 @@
         ```bash
         # isu1 で実行
         uname -a
+        ```
+      * アプリサービスの確認
+        ```bash
+        # isu1 で実行
+        systemctl list-unit-files | grep -e isu
+        ```
+      * アプリビルド方法の確認
+        ```bash
+        # isu1 で実行
+        ls ~/webapp/go
+        cat ~/webapp/Makefile
+        ```
+      * アプリ環境変数ファイルの確認
+        ```bash
+        # isu1 で実行
+        ls ~/env.sh
         ```
 1. ansible を実行する
     ```bash
@@ -81,24 +97,6 @@
     git reset --hard FETCH_HEAD
     ```
 1. ローカルで git pull
-1. Makefile の「問題ごとに変わる設定」に値を入力して、commit & push
-    * `BIN_NAME`, `SERVICE_NAME` の確認
-      ```bash
-      # isu1 で実行
-      systemctl list-unit-files | grep -e isu
-      ```
-    * `BUILD_CMD` の確認
-      ```bash
-      # isu1 で実行
-      ls ~/webapp/go
-      cat ~/webapp/Makefile
-      ```
-    * `ENV_FILE_NAME` の確認
-      ```bash
-      # isu1 で実行
-      ls ~/env.sh
-      ```
-1. ビルドコマンドが make の場合、Makefile での go コマンドの指定をフルパスにする
 1. デプロイ実行
     ```bash
     # ローカル(isucon-utils)で実行
