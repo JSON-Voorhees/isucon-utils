@@ -20,4 +20,4 @@ systemd_dir=/etc/systemd/system
 mysql_dir=/etc/mysql
 mysql_service=mysql
 
-github_repo=youdofoo/isucon-rehearsal
+github_repo=JSON-Voorhees/isucon14

@@ -12,12 +12,6 @@
         "Duration": 80
     },
     {
-        "Type": "pt",
-        "Label": "isu1",
-        "URL": "http://localhost:19001/debug/log/slowlog",
-        "Duration": 80
-    },
-    {
         "Type": "pprof",
         "Label": "isu1",
         "URL": "http://localhost:19001/debug/pprof/profile",
